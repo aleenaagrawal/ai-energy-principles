@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Principles for AI & Energy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0D1F2D;
+    --navy-mid: #1A3347;
+    --navy-light: #243D52;
+    --amber: #C8873A;
+    --amber-light: #F5EAD8;
+    --amber-mid: #D9A060;
+    --teal: #1F7A6E;
+    --teal-light: #E0F2EF;
+    --teal-mid: #2A9D8F;
+    --ink: #1C1C1E;
+    --muted: #5A5A66;
+    --subtle: #9A9AA8;
+    --border: #E4E3DD;
+    --border-dark: #C8C7BF;
+    --bg: #F7F6F1;
+    --surface: #FFFFFF;
+    --cream: #EFEDE6;
+    --warm-white: #FDFCF9;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Instrument Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(13,31,45,0.97);
+    backdrop-filter: blur(16px);
+    padding: 0 2.5rem;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+  .nav-brand span { color: var(--amber-mid); }
+  .nav-links {
+    display: flex; gap: 0.25rem; list-style: none;
+  }
+  .nav-links a {
+    font-size: 12.5px; font-weight: 400;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .nav-links a:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
+
+  /* HERO — dark full-bleed */
+  .hero-wrap {
+    background: var(--navy);
+    padding-bottom: 0;
+  }
+  .hero {
+    padding: 10rem 3rem 5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-size: 10.5px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--amber-mid);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 32px; height: 1px;
+    background: var(--amber);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 1.75rem;
+    font-weight: 400;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--amber-mid);
+  }
+  .hero-sub {
+    font-size: 17px; font-weight: 300;
+    color: rgba(255,255,255,0.55);
+    max-width: 520px;
+    line-height: 1.65;
+    margin-bottom: 3rem;
+    letter-spacing: 0.01em;
+  }
+  .hero-rule {
+    width: 100%; height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin-bottom: 2.75rem;
+  }
+  .hero-intro {
+    font-size: 15px; font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    max-width: 680px;
+    line-height: 1.8;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--amber);
+    padding-bottom: 4rem;
+  }
+
+  /* PRINCIPLES GRID */
+  .section {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 4rem 2.5rem 6rem;
+  }
+
+  .principles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 4.5rem;
+    box-shadow: 0 2px 24px rgba(13,31,45,0.07);
+  }
+
+  .principle-card {
+    background: var(--surface);
+    padding: 2.75rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative;
+  }
+  .principle-card:hover { background: var(--warm-white); }
+  .principle-card.active { background: var(--amber-light); }
+  .principle-card.active-teal { background: var(--teal-light); }
+
+  .p-number {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--subtle);
+    margin-bottom: 1rem;
+  }
+  .principle-card.active .p-number { color: var(--amber); }
+  .principle-card.active-teal .p-number { color: var(--teal); }
+
+  .p-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.1rem;
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .principle-card.active .p-title { color: var(--amber); }
+  .principle-card.active-teal .p-title { color: var(--teal); }
+
+  .p-preview {
+    font-size: 13.5px; font-weight: 300;
+    color: var(--muted);
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .p-expand-btn {
+    font-size: 11.5px; font-weight: 500;
+    color: var(--amber);
+    display: flex; align-items: center; gap: 5px;
+    background: none; border: none; cursor: pointer;
+    padding: 0; font-family: 'Instrument Sans', sans-serif;
+    transition: gap 0.2s;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .principle-card.active-teal .p-expand-btn,
+  [id^="card-3"] .p-expand-btn,
+  [id^="card-4"] .p-expand-btn { color: var(--teal); }
+  .p-expand-btn:hover { gap: 8px; }
+  .p-expand-btn .arrow { transition: transform 0.2s; display: inline-block; font-size: 14px; }
+  .p-expand-btn.expanded .arrow { transform: rotate(90deg); }
+
+  /* DETAIL PANEL */
+  .detail-panel {
+    display: none;
+    grid-column: 1 / -1;
+    background: var(--warm-white);
+    padding: 3rem 3.5rem;
+    border-top: 1px solid var(--border);
+    animation: slideDown 0.25s ease;
+  }
+  .detail-panel.visible { display: block; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .detail-inner {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 3.5rem;
+    max-width: 920px;
+  }
+
+  .detail-body {
+    font-size: 15px; font-weight: 300;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 1.75rem;
+  }
+
+  .commitments-title {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--subtle);
+    margin-bottom: 0.85rem;
+  }
+  .commitments-list {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .commitments-list li {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 14px; font-weight: 300; line-height: 1.6; color: var(--muted);
+  }
+  .commitments-list li::before {
+    content: '';
+    display: inline-block;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--amber);
+    margin-top: 9px;
+    flex-shrink: 0;
+  }
+  .teal-accent .commitments-list li::before { background: var(--teal); }
+
+  /* CASE STUDIES SIDEBAR */
+  .case-studies-sidebar {
+    border-left: 1px solid var(--border);
+    padding-left: 2.5rem;
+  }
+  .cs-title {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--subtle);
+    margin-bottom: 1rem;
+  }
+  .cs-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .cs-item {
+    display: block;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.18s;
+    background: var(--surface);
+  }
+  .cs-item:hover {
+    border-color: var(--amber-mid);
+    background: var(--amber-light);
+    transform: translateX(3px);
+  }
+  .teal-accent .cs-item:hover {
+    border-color: var(--teal-mid);
+    background: var(--teal-light);
+  }
+  .cs-tag {
+    font-size: 9.5px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 3px;
+  }
+  .teal-accent .cs-tag { color: var(--teal); }
+  .cs-name {
+    font-size: 13px; font-weight: 400;
+    color: var(--navy);
+    line-height: 1.4;
+  }
+  .cs-source {
+    font-size: 11px;
+    color: var(--subtle);
+    margin-top: 3px;
+  }
+  .cs-placeholder {
+    padding: 0.85rem 1rem;
+    border: 1px dashed var(--border-dark);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--subtle);
+    font-style: italic;
+  }
+  .cs-add {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 500;
+    color: var(--amber);
+    background: none; border: none; cursor: pointer;
+    padding: 0.65rem 0 0;
+    font-family: 'Instrument Sans', sans-serif;
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .teal-accent .cs-add { color: var(--teal); }
+  .cs-add:hover { opacity: 0.7; }
+
+  /* CALLOUT */
+  .callout {
+    background: var(--navy);
+    color: white;
+    padding: 4rem 4rem;
+    border-radius: 16px;
+    margin-bottom: 4.5rem;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--navy-light);
+  }
+  .callout::before {
+    content: '"';
+    position: absolute;
+    top: -2rem; left: 2.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 14rem;
+    color: rgba(200,135,58,0.08);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .callout-amber-bar {
+    width: 40px; height: 2px;
+    background: var(--amber);
+    margin: 0 auto 1.75rem;
+  }
+  .callout-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 2.5vw, 1.65rem);
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    font-style: italic;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    color: rgba(255,255,255,0.92);
+    font-weight: 400;
+  }
+  .callout-attr {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(200,135,58,0.7);
+    margin-top: 1.75rem;
+    position: relative;
+  }
+
+  /* STAKEHOLDERS */
+  .stakeholders {
+    margin-bottom: 5rem;
+  }
+  .section-eyebrow {
+    font-size: 10.5px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--subtle);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 28px; height: 1.5px;
+    background: var(--border);
+  }
+  .stakeholder-pills {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .pill {
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--border-dark);
+    border-radius: 100px;
+    font-size: 12.5px; font-weight: 400;
+    color: var(--muted);
+    background: var(--surface);
+    letter-spacing: 0.01em;
+  }
+  .pill.amber { border-color: var(--amber-mid); color: var(--amber); background: var(--amber-light); }
+  .pill.teal { border-color: var(--teal-mid); color: var(--teal); background: var(--teal-light); }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy);
+    padding: 2.25rem 2.5rem;
+    text-align: center;
+    font-size: 12px; color: rgba(255,255,255,0.35);
+    letter-spacing: 0.03em;
+  }
+
+  /* ENDORSEMENT SECTION */
+  .endorse-wrap {
+    background: var(--navy);
+    padding: 5rem 0 0;
+  }
+  .endorse-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 2.5rem 5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .endorse-eyebrow {
+    font-size: 10.5px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--amber-mid);
+    margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .endorse-eyebrow::before {
+    content: ''; display: inline-block;
+    width: 28px; height: 1px; background: var(--amber);
+  }
+  .endorse-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #fff;
+    font-weight: 400;
+    margin-bottom: 1.25rem;
+  }
+  .endorse-heading em { font-style: italic; color: var(--amber-mid); }
+  .endorse-desc {
+    font-size: 14.5px; font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+    max-width: 420px;
+  }
+  .endorse-count-row {
+    display: flex; align-items: baseline; gap: 0.75rem;
+    margin-bottom: 0.4rem;
+  }
+  .endorse-count {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem; font-weight: 400;
+    color: var(--amber-mid);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .endorse-count-label {
+    font-size: 13px; font-weight: 300;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.02em;
+  }
+  .endorse-divider {
+    width: 100%; height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 2rem 0;
+  }
+  .endorse-wall-title {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 1rem;
+  }
+  .endorse-wall { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .endorse-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    font-size: 12px; font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.04);
+    animation: fadeInTag 0.3s ease both;
+  }
+  .endorse-tag .et-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--amber-mid); flex-shrink: 0;
+  }
+  .endorse-tag.teal-dot .et-dot { background: var(--teal-mid); }
+  @keyframes fadeInTag {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .endorse-form-card {
+    background: var(--warm-white);
+    border-radius: 16px;
+    padding: 2.5rem;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .form-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem; font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.01em;
+  }
+  .form-subtitle {
+    font-size: 13px; font-weight: 300;
+    color: var(--muted);
+    margin-bottom: 1.75rem;
+    line-height: 1.55;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 0.3rem; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label {
+    font-size: 10.5px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--subtle);
+  }
+  .form-input {
+    padding: 0.6rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--surface);
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+  }
+  .form-input:focus { border-color: var(--amber-mid); }
+  .form-input::placeholder { color: var(--subtle); }
+  select.form-input { appearance: none; cursor: pointer; }
+  textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
+  .form-check-row {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    padding: 1rem;
+    background: var(--amber-light);
+    border-radius: 10px;
+    margin: 1rem 0 1.25rem;
+    border: 1px solid rgba(200,135,58,0.2);
+  }
+  .form-check-row input[type="checkbox"] {
+    width: 16px; height: 16px;
+    accent-color: var(--amber);
+    flex-shrink: 0; margin-top: 2px;
+    cursor: pointer;
+  }
+  .form-check-label {
+    font-size: 13px; font-weight: 300;
+    color: var(--muted); line-height: 1.55;
+  }
+  .form-check-label strong { font-weight: 500; color: var(--ink); }
+  .form-submit {
+    width: 100%;
+    padding: 0.85rem;
+    background: var(--navy);
+    color: white;
+    border: none; border-radius: 10px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 13.5px; font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .form-submit:hover { background: var(--navy-mid); }
+  .form-submit:active { transform: scale(0.99); }
+  .form-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 2rem 1rem;
+    animation: fadeInTag 0.4s ease;
+  }
+  .form-success-icon {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--teal-light);
+    border: 1px solid var(--teal-mid);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 20px;
+  }
+  .form-success h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 600;
+    color: var(--navy); margin-bottom: 0.4rem;
+  }
+  .form-success p {
+    font-size: 13.5px; font-weight: 300;
+    color: var(--muted); line-height: 1.6;
+  }
+
+  @media (max-width: 860px) {
+    .endorse-inner { grid-template-columns: 1fr; gap: 3rem; }
+  }
+  @media (max-width: 720px) {
+    .principles-grid { grid-template-columns: 1fr; }
+    .detail-panel { padding: 1.5rem; }
+    .detail-inner { grid-template-columns: 1fr; }
+    .case-studies-sidebar { border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+    .nav-links { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="#">AI <span>&amp;</span> Energy</a>
+  <ul class="nav-links">
+    <li><a href="#principles">Principles</a></li>
+    <li><a href="#stakeholders">Stakeholders</a></li>
+    <li><a href="#callout">Our Commitment</a></li>
+    <li><a href="#endorse" style="color:var(--amber-mid); font-weight:500;">Sign On</a></li>
+  </ul>
+</nav>
+
+<div class="hero-wrap">
+  <section class="hero">
+    <div class="hero-eyebrow">Global Principles</div>
+    <h1>A Framework for <em>AI &amp; Energy</em></h1>
+    <p class="hero-sub">Shared principles for shared prosperity — and a sustainable future.</p>
+    <div class="hero-rule"></div>
+    <p class="hero-intro">The convergence of artificial intelligence and energy systems presents one of the most consequential opportunities of our era. This opportunity will only be realized if the right stakeholders come together with shared principles, shared accountability, and shared ambition.</p>
+  </section>
+</div>
+
+<section class="section" id="principles">
+  <div class="principles-grid" id="principlesGrid">
+
+    <!-- Card 1 -->
+    <div class="principle-card" id="card-1" onclick="toggleDetail(1)">
+      <div class="p-number">Principle I</div>
+      <div class="p-title">AI Investment is an Economic Development Opportunity</div>
+      <div class="p-preview">AI infrastructure — data centers, transmission upgrades, grid modernization — represents a massive infusion of capital into communities. When sited and structured intentionally, these projects can generate lasting local jobs, expand the tax base, and bring new energy infrastructure to underserved regions.</div>
+      <button class="p-expand-btn" id="btn-1"><span>Read more</span><span class="arrow">›</span></button>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="principle-card" id="card-2" onclick="toggleDetail(2)">
+      <div class="p-number">Principle II</div>
+      <div class="p-title">Communities Must Have a Seat at the Table</div>
+      <div class="p-preview">The scale of AI-driven energy demand can easily outpace the capacity of local communities to engage and shape decisions that profoundly affect them. Realistic, inclusive dialogue is not optional — it is essential. Communities deserve to understand what is being built and what they stand to gain.</div>
+      <button class="p-expand-btn" id="btn-2"><span>Read more</span><span class="arrow">›</span></button>
+    </div>
+
+    <!-- Detail 1+2 -->
+    <div class="detail-panel" id="detail-1">
+      <div class="detail-inner">
+        <div>
+          <p class="detail-body">AI infrastructure — data centers, transmission upgrades, grid modernization — represents a massive infusion of capital into communities across the globe. When sited and structured intentionally, these projects can generate lasting local jobs, expand the tax base, spur supply chain investment, and bring new energy infrastructure to underserved regions. We affirm that AI growth, properly channeled, is not just a technology story — it is an economic development story, and communities should be empowered to capture that value.</p>
+          <div class="commitments-title">Commitments under this principle</div>
+          <ul class="commitments-list">
+            <li>Prioritize community benefit agreements tied to AI infrastructure siting decisions</li>
+            <li>Support local workforce development and apprenticeship programs tied to new projects</li>
+            <li>Ensure economic benefits are distributed broadly, not concentrated in already-advantaged markets</li>
+          </ul>
+        </div>
+        <div class="case-studies-sidebar">
+          <div class="cs-title">Case Studies</div>
+          <ul class="cs-list" id="cs-list-1">
+            <li class="cs-placeholder">No case studies linked yet</li>
+          </ul>
+          <button class="cs-add" onclick="addCaseStudy(1)">+ Add case study</button>
+        </div>
+      </div>
+    </div>
+    <div class="detail-panel" id="detail-2">
+      <div class="detail-inner">
+        <div>
+          <p class="detail-body">The scale and pace of AI-driven energy demand can easily outpace the capacity of local communities to engage, understand, and shape decisions that profoundly affect them. Realistic, inclusive dialogue is not optional — it is essential. Communities deserve to understand what is being built, what it will cost in terms of land, water, grid capacity, and emissions, and what they stand to gain. No project should proceed without genuine community input, grounded in transparent and accessible information.</p>
+          <div class="commitments-title">Commitments under this principle</div>
+          <ul class="commitments-list">
+            <li>Establish community engagement processes early — before permits, not after announcements</li>
+            <li>Provide clear, jargon-free disclosures on energy use, water use, grid impacts, and projected emissions</li>
+            <li>Invest in civic infrastructure — tools, forums, and resources — that enable communities to evaluate tradeoffs and make informed decisions</li>
+          </ul>
+        </div>
+        <div class="case-studies-sidebar">
+          <div class="cs-title">Case Studies</div>
+          <ul class="cs-list" id="cs-list-2">
+            <li class="cs-placeholder">No case studies linked yet</li>
+          </ul>
+          <button class="cs-add" onclick="addCaseStudy(2)">+ Add case study</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="principle-card" id="card-3" onclick="toggleDetail(3)">
+      <div class="p-number">Principle III</div>
+      <div class="p-title">New Stakeholder Coalitions Are Required</div>
+      <div class="p-preview">The challenges at the intersection of AI and energy cannot be solved by any single sector. Utility companies, technology firms, regulators, local governments, environmental advocates, and labor organizations each hold a piece of the solution. We call for the intentional construction of multi-stakeholder coalitions built on trust and shared data.</div>
+      <button class="p-expand-btn" id="btn-3"><span>Read more</span><span class="arrow">›</span></button>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="principle-card" id="card-4" onclick="toggleDetail(4)">
+      <div class="p-number">Principle IV</div>
+      <div class="p-title">AI Growth Must Accelerate the Energy Transition</div>
+      <div class="p-preview">The explosion in AI energy demand is not inherently a climate threat — but it will become one without deliberate action. Conversely, if tech companies, utilities, and policymakers align their incentives, the booming AI market can become one of the most powerful engines for clean energy deployment in history.</div>
+      <button class="p-expand-btn" id="btn-4"><span>Read more</span><span class="arrow">›</span></button>
+    </div>
+
+    <!-- Detail 3+4 -->
+    <div class="detail-panel teal-accent" id="detail-3">
+      <div class="detail-inner">
+        <div>
+          <p class="detail-body">The challenges at the intersection of AI and energy cannot be solved by any single sector. Utility companies, technology firms, regulators, local governments, environmental advocates, labor organizations, and community groups each hold a piece of the solution. Success will require new forms of coordination that did not exist a decade ago. We call for the intentional construction of multi-stakeholder coalitions built on trust, mutual accountability, and shared data — not ad hoc negotiations driven by crisis.</p>
+          <div class="commitments-title">Commitments under this principle</div>
+          <ul class="commitments-list teal-accent">
+            <li>Establish standing multi-stakeholder forums at regional, national, and international levels</li>
+            <li>Develop shared data standards and load forecasting methodologies that all parties can trust and verify</li>
+            <li>Create accountability mechanisms so commitments made in coalitions are honored and enforced</li>
+          </ul>
+        </div>
+        <div class="case-studies-sidebar">
+          <div class="cs-title">Case Studies</div>
+          <ul class="cs-list" id="cs-list-3">
+            <li class="cs-placeholder">No case studies linked yet</li>
+          </ul>
+          <button class="cs-add teal-accent" onclick="addCaseStudy(3)" style="color:var(--teal)">+ Add case study</button>
+        </div>
+      </div>
+    </div>
+    <div class="detail-panel teal-accent" id="detail-4">
+      <div class="detail-inner">
+        <div>
+          <p class="detail-body">The explosion in AI energy demand is not inherently a climate threat — but it will become one without deliberate action. Conversely, if tech companies, utilities, and policymakers align their incentives, the booming AI market can become one of the most powerful engines for clean energy deployment in history: driving demand for new renewables, anchoring financing for grid storage, spurring transmission buildout, and providing the stable offtake commitments that clean energy developers need to build. AI and a clean energy future are not in conflict. They can and must reinforce one another.</p>
+          <div class="commitments-title">Commitments under this principle</div>
+          <ul class="commitments-list teal-accent">
+            <li>Require AI data center developers to source power with high additionality, prioritizing new clean energy generation over unbundled credits</li>
+            <li>Use long-term AI energy demand as an anchor for financing new renewable and storage projects in regions that need it most</li>
+            <li>Align AI infrastructure timelines with grid decarbonization roadmaps, avoiding investments that lock in fossil fuel dependency</li>
+          </ul>
+        </div>
+        <div class="case-studies-sidebar">
+          <div class="cs-title">Case Studies</div>
+          <ul class="cs-list" id="cs-list-4">
+            <li class="cs-placeholder">No case studies linked yet</li>
+          </ul>
+          <button class="cs-add teal-accent" onclick="addCaseStudy(4)" style="color:var(--teal)">+ Add case study</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CALLOUT -->
+  <div class="callout" id="callout">
+    <div class="callout-amber-bar"></div>
+    <div class="callout-text">AI is arriving whether we plan for it or not. The question is whether we choose to harness it — for our communities, our economies, and our climate.</div>
+    <div class="callout-attr">Global Principles for AI &amp; Energy</div>
+  </div>
+
+  <!-- STAKEHOLDERS -->
+  <div class="stakeholders" id="stakeholders">
+    <div class="section-eyebrow">Who must come together</div>
+    <div class="stakeholder-pills">
+      <span class="pill amber">Technology companies</span>
+      <span class="pill amber">Hyperscalers &amp; data center operators</span>
+      <span class="pill">Investor-owned utilities</span>
+      <span class="pill">Public power &amp; co-ops</span>
+      <span class="pill teal">Renewable energy developers</span>
+      <span class="pill teal">Grid storage &amp; transmission</span>
+      <span class="pill">State &amp; local regulators</span>
+      <span class="pill">Federal policymakers</span>
+      <span class="pill">Community organizations</span>
+      <span class="pill">Labor &amp; workforce</span>
+      <span class="pill teal">Environmental advocates</span>
+      <span class="pill">Indigenous &amp; frontline communities</span>
+      <span class="pill">Academic &amp; research institutions</span>
+      <span class="pill">International bodies</span>
+    </div>
+  </div>
+
+</section>
+
+<!-- ENDORSEMENT SECTION -->
+<div class="endorse-wrap" id="endorse">
+  <div class="endorse-inner">
+
+    <div class="endorse-left">
+      <div class="endorse-eyebrow">Add Your Voice</div>
+      <h2 class="endorse-heading">Join those who <em>stand behind</em> these principles</h2>
+      <p class="endorse-desc">These principles grow stronger with every organization and individual that endorses them. Add your name to signal that you are committed to a collaborative, equitable, and clean energy future for AI.</p>
+
+      <div class="endorse-count-row">
+        <span class="endorse-count" id="endorseCount">0</span>
+        <span class="endorse-count-label">endorsers so far</span>
+      </div>
+
+      <div class="endorse-divider"></div>
+      <div class="endorse-wall-title">Recent signatories</div>
+      <div class="endorse-wall" id="endorseWall">
+        <span style="font-size:13px; font-weight:300; color:rgba(255,255,255,0.25); font-style:italic;">Be the first to sign on.</span>
+      </div>
+    </div>
+
+    <div class="endorse-form-card" id="endorseFormCard">
+      <div class="form-title">Sign the Principles</div>
+      <p class="form-subtitle">Your name and organization will appear in the public list of signatories.</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="e-first">First name *</label>
+          <input class="form-input" type="text" id="e-first" placeholder="Jane" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="e-last">Last name *</label>
+          <input class="form-input" type="text" id="e-last" placeholder="Smith" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="e-title">Title / Role</label>
+          <input class="form-input" type="text" id="e-title" placeholder="Director of Policy" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="e-org">Organization *</label>
+          <input class="form-input" type="text" id="e-org" placeholder="Acme Energy Co." />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group full">
+          <label class="form-label" for="e-email">Email address *</label>
+          <input class="form-input" type="email" id="e-email" placeholder="jane@example.com" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group full">
+          <label class="form-label" for="e-sector">Sector</label>
+          <select class="form-input" id="e-sector">
+            <option value="">Select your sector…</option>
+            <option>Technology / AI</option>
+            <option>Energy / Utilities</option>
+            <option>Renewable Energy</option>
+            <option>Government / Policy</option>
+            <option>Civil Society / NGO</option>
+            <option>Labor / Workforce</option>
+            <option>Academia / Research</option>
+            <option>Finance / Investment</option>
+            <option>Community Organization</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group full">
+          <label class="form-label" for="e-message">Why you're signing <span style="font-weight:300; text-transform:none; letter-spacing:0;">(optional)</span></label>
+          <textarea class="form-input" id="e-message" placeholder="Share what these principles mean to you or your organization…"></textarea>
+        </div>
+      </div>
+
+      <div class="form-check-row">
+        <input type="checkbox" id="e-consent" />
+        <label class="form-check-label" for="e-consent">
+          I confirm that I endorse the <strong>Global Principles for AI &amp; Energy</strong> and agree that my name and organization may be listed publicly as a signatory.
+        </label>
+      </div>
+
+      <button class="form-submit" id="endorseSubmit" onclick="submitEndorsement()">Sign the Principles →</button>
+
+      <div class="form-success" id="endorseSuccess">
+        <div class="form-success-icon">✓</div>
+        <h4>You're signed on.</h4>
+        <p>Thank you for adding your voice. Your endorsement has been recorded and your name will appear in the signatory list.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id="modal" style="display:none; position:fixed; inset:0; z-index:200; background:rgba(13,31,45,0.5); align-items:center; justify-content:center;">
+  <div style="background:var(--surface); border-radius:14px; padding:2rem; width:min(480px, 90vw); box-shadow:0 20px 60px rgba(13,31,45,0.2);">
+    <h3 style="font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:1.25rem; color:var(--navy); font-weight:600;">Add Case Study</h3>
+    <input id="cs-input-title" type="text" placeholder="Title (e.g. Microsoft + Constellation Nuclear Deal)" style="width:100%; margin-bottom:0.75rem; padding:0.6rem 0.85rem; border:1px solid var(--border); border-radius:8px; font-family:'Instrument Sans',sans-serif; font-size:14px; color:var(--ink);" />
+    <input id="cs-input-source" type="text" placeholder="Source / publication" style="width:100%; margin-bottom:0.75rem; padding:0.6rem 0.85rem; border:1px solid var(--border); border-radius:8px; font-family:'Instrument Sans',sans-serif; font-size:14px; color:var(--ink);" />
+    <input id="cs-input-url" type="url" placeholder="https://..." style="width:100%; margin-bottom:1.25rem; padding:0.6rem 0.85rem; border:1px solid var(--border); border-radius:8px; font-family:'Instrument Sans',sans-serif; font-size:14px; color:var(--ink);" />
+    <div style="display:flex; gap:0.75rem; justify-content:flex-end;">
+      <button onclick="closeModal()" style="padding:0.5rem 1.1rem; border:1px solid var(--border-dark); border-radius:8px; background:none; cursor:pointer; font-family:'Instrument Sans',sans-serif; font-size:13px; color:var(--muted);">Cancel</button>
+      <button onclick="saveCase()" style="padding:0.5rem 1.25rem; border:none; border-radius:8px; background:var(--navy); color:white; cursor:pointer; font-family:'Instrument Sans',sans-serif; font-size:13px; font-weight:500;">Add link</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Global Principles for AI &amp; Energy &mdash; A framework for collaboration between energy providers, technology companies, communities, and policymakers.</p>
+</footer>
+
+<script>
+let activeDetail = null;
+let currentPrinciple = null;
+
+const tealPrinciples = [3, 4];
+
+function toggleDetail(n) {
+  const detail = document.getElementById('detail-' + n);
+  const card = document.getElementById('card-' + n);
+  const btn = document.getElementById('btn-' + n);
+  const isTeal = tealPrinciples.includes(n);
+
+  if (activeDetail === n) {
+    detail.classList.remove('visible');
+    card.classList.remove('active', 'active-teal');
+    btn.classList.remove('expanded');
+    btn.querySelector('span').textContent = 'Read more';
+    activeDetail = null;
+  } else {
+    if (activeDetail !== null) {
+      const prev = document.getElementById('detail-' + activeDetail);
+      const prevCard = document.getElementById('card-' + activeDetail);
+      const prevBtn = document.getElementById('btn-' + activeDetail);
+      prev.classList.remove('visible');
+      prevCard.classList.remove('active', 'active-teal');
+      prevBtn.classList.remove('expanded');
+      prevBtn.querySelector('span').textContent = 'Read more';
+    }
+    detail.classList.add('visible');
+    card.classList.add(isTeal ? 'active-teal' : 'active');
+    btn.classList.add('expanded');
+    btn.querySelector('span').textContent = 'Close';
+    activeDetail = n;
+    setTimeout(() => detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  }
+}
+
+function addCaseStudy(principle) {
+  currentPrinciple = principle;
+  document.getElementById('modal').style.display = 'flex';
+  document.getElementById('cs-input-title').focus();
+}
+
+function closeModal() {
+  document.getElementById('modal').style.display = 'none';
+  document.getElementById('cs-input-title').value = '';
+  document.getElementById('cs-input-source').value = '';
+  document.getElementById('cs-input-url').value = '';
+}
+
+function saveCase() {
+  const title = document.getElementById('cs-input-title').value.trim();
+  const source = document.getElementById('cs-input-source').value.trim();
+  const url = document.getElementById('cs-input-url').value.trim();
+  if (!title) return;
+
+  const list = document.getElementById('cs-list-' + currentPrinciple);
+  const placeholder = list.querySelector('.cs-placeholder');
+  if (placeholder) placeholder.remove();
+
+  const isTeal = tealPrinciples.includes(currentPrinciple);
+
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  a.className = 'cs-item';
+  a.href = url || '#';
+  if (url) a.target = '_blank';
+  a.innerHTML = `
+    <div class="cs-tag">${isTeal ? '' : ''}Case study</div>
+    <div class="cs-name">${escHtml(title)}</div>
+    ${source ? `<div class="cs-source">${escHtml(source)}</div>` : ''}
+  `;
+  if (isTeal) {
+    a.classList.add('teal-cs');
+    a.addEventListener('mouseenter', () => { a.style.borderColor='var(--teal-mid)'; a.style.background='var(--teal-light)'; });
+    a.addEventListener('mouseleave', () => { a.style.borderColor=''; a.style.background=''; });
+  }
+  li.appendChild(a);
+  list.appendChild(li);
+  closeModal();
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Enter' && document.getElementById('modal').style.display === 'flex') saveCase();
+});
+
+/* ---- ENDORSEMENT ---- */
+const endorsers = [];
+const sectorColors = {
+  'Technology / AI': '',
+  'Renewable Energy': 'teal-dot',
+  'Energy / Utilities': '',
+  'Government / Policy': '',
+  'Civil Society / NGO': 'teal-dot',
+  'Academia / Research': 'teal-dot',
+};
+
+function submitEndorsement() {
+  const first = document.getElementById('e-first').value.trim();
+  const last = document.getElementById('e-last').value.trim();
+  const org = document.getElementById('e-org').value.trim();
+  const email = document.getElementById('e-email').value.trim();
+  const title = document.getElementById('e-title').value.trim();
+  const sector = document.getElementById('e-sector').value;
+  const consent = document.getElementById('e-consent').checked;
+
+  if (!first || !last || !org) { shakeField(!first ? 'e-first' : !last ? 'e-last' : 'e-org'); return; }
+  if (!email || !email.includes('@')) { shakeField('e-email'); return; }
+  if (!consent) { shakeField('e-consent'); return; }
+
+  const record = { first, last, org, title, sector };
+  endorsers.push(record);
+
+  updateEndorserWall(record);
+  document.getElementById('endorseCount').textContent = endorsers.length;
+
+  const formEl = document.getElementById('endorseFormCard');
+  formEl.querySelectorAll('.form-row, .form-check-row, .form-submit, .form-title, .form-subtitle').forEach(el => el.style.display = 'none');
+  const success = document.getElementById('endorseSuccess');
+  success.style.display = 'block';
+}
+
+function updateEndorserWall(record) {
+  const wall = document.getElementById('endorseWall');
+  const placeholder = wall.querySelector('span');
+  if (placeholder) placeholder.remove();
+
+  const colorClass = sectorColors[record.sector] || '';
+  const tag = document.createElement('span');
+  tag.className = 'endorse-tag' + (colorClass ? ' ' + colorClass : '');
+  tag.innerHTML = `<span class="et-dot"></span>${escHtml(record.first)} ${escHtml(record.last)}${record.org ? ', ' + escHtml(record.org) : ''}`;
+  tag.style.animationDelay = '0ms';
+  wall.appendChild(tag);
+}
+
+function shakeField(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.borderColor = '#e05252';
+  el.style.outline = '2px solid rgba(224,82,82,0.2)';
+  setTimeout(() => { el.style.borderColor = ''; el.style.outline = ''; }, 1800);
+  el.focus();
+}
+</script>
+</body>
+</html>
