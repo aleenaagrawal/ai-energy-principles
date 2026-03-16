@@ -1013,53 +1013,116 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' && document.getElementById('modal').style.display === 'flex') saveCase();
 });
 
-/* ---- ENDORSEMENT ---- */
-const endorsers = [];
+/* ---- AIRTABLE CONFIG ---- */
+const AT_TOKEN  = 'patn92VzFYiPQCCrs.f4962f5f7c37cfedf1341c6bea88425de17c8fabd0ed0b155da0704257e3db4a';
+const AT_BASE   = 'app3lFdXJvCN4vmv2';
+const AT_TABLE  = 'tblV9AL3Q0gipS9Cj';
+const AT_URL    = `https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}`;
+const AT_HEADS  = { 'Authorization': `Bearer ${AT_TOKEN}`, 'Content-Type': 'application/json' };
+
 const sectorColors = {
-  'Technology / AI': '',
   'Renewable Energy': 'teal-dot',
-  'Energy / Utilities': '',
-  'Government / Policy': '',
   'Civil Society / NGO': 'teal-dot',
   'Academia / Research': 'teal-dot',
 };
 
-function submitEndorsement() {
-  const first = document.getElementById('e-first').value.trim();
-  const last = document.getElementById('e-last').value.trim();
-  const org = document.getElementById('e-org').value.trim();
-  const email = document.getElementById('e-email').value.trim();
-  const title = document.getElementById('e-title').value.trim();
-  const sector = document.getElementById('e-sector').value;
-  const consent = document.getElementById('e-consent').checked;
+/* Load existing signatories on page load */
+async function loadEndorsers() {
+  try {
+    let allRecords = [], offset = null;
+    do {
+      const url = AT_URL + '?fields%5B%5D=Name&fields%5B%5D=Organization&fields%5B%5D=Sector&pageSize=100' + (offset ? '&offset=' + offset : '');
+      const res = await fetch(url, { headers: AT_HEADS });
+      const data = await res.json();
+      if (!data.records) break;
+      allRecords = allRecords.concat(data.records);
+      offset = data.offset || null;
+    } while (offset);
 
-  if (!first || !last || !org) { shakeField(!first ? 'e-first' : !last ? 'e-last' : 'e-org'); return; }
-  if (!email || !email.includes('@')) { shakeField('e-email'); return; }
-  if (!consent) { shakeField('e-consent'); return; }
+    if (allRecords.length === 0) return;
 
-  const record = { first, last, org, title, sector };
-  endorsers.push(record);
+    const wall = document.getElementById('endorseWall');
+    wall.innerHTML = '';
+    document.getElementById('endorseCount').textContent = allRecords.length;
 
-  updateEndorserWall(record);
-  document.getElementById('endorseCount').textContent = endorsers.length;
-
-  const formEl = document.getElementById('endorseFormCard');
-  formEl.querySelectorAll('.form-row, .form-check-row, .form-submit, .form-title, .form-subtitle').forEach(el => el.style.display = 'none');
-  const success = document.getElementById('endorseSuccess');
-  success.style.display = 'block';
+    allRecords.forEach(r => {
+      const f = r.fields;
+      addTagToWall({ name: f.Name || '', org: f.Organization || '', sector: f.Sector || '' });
+    });
+  } catch (e) {
+    console.warn('Could not load endorsers:', e);
+  }
 }
 
-function updateEndorserWall(record) {
+function addTagToWall({ name, org, sector }) {
   const wall = document.getElementById('endorseWall');
-  const placeholder = wall.querySelector('span');
-  if (placeholder) placeholder.remove();
-
-  const colorClass = sectorColors[record.sector] || '';
+  const colorClass = sectorColors[sector] || '';
   const tag = document.createElement('span');
   tag.className = 'endorse-tag' + (colorClass ? ' ' + colorClass : '');
-  tag.innerHTML = `<span class="et-dot"></span>${escHtml(record.first)} ${escHtml(record.last)}${record.org ? ', ' + escHtml(record.org) : ''}`;
-  tag.style.animationDelay = '0ms';
+  tag.innerHTML = `<span class="et-dot"></span>${escHtml(name)}${org ? ', ' + escHtml(org) : ''}`;
   wall.appendChild(tag);
+}
+
+/* Submit endorsement */
+async function submitEndorsement() {
+  const first   = document.getElementById('e-first').value.trim();
+  const last    = document.getElementById('e-last').value.trim();
+  const org     = document.getElementById('e-org').value.trim();
+  const email   = document.getElementById('e-email').value.trim();
+  const title   = document.getElementById('e-title').value.trim();
+  const sector  = document.getElementById('e-sector').value;
+  const message = document.getElementById('e-message').value.trim();
+  const consent = document.getElementById('e-consent').checked;
+
+  if (!first || !last) { shakeField(!first ? 'e-first' : 'e-last'); return; }
+  if (!org)             { shakeField('e-org'); return; }
+  if (!email || !email.includes('@')) { shakeField('e-email'); return; }
+  if (!consent)         { shakeField('e-consent'); return; }
+
+  const btn = document.getElementById('endorseSubmit');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  try {
+    const res = await fetch(AT_URL, {
+      method: 'POST',
+      headers: AT_HEADS,
+      body: JSON.stringify({
+        records: [{
+          fields: {
+            'Name':         `${first} ${last}`,
+            'Organization': org,
+            'Title':        title,
+            'Email':        email,
+            'Sector':       sector,
+            'Message':      message,
+            'Signed At':    new Date().toISOString(),
+          }
+        }]
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'Airtable error');
+
+    /* Update the wall + count live */
+    const currentCount = parseInt(document.getElementById('endorseCount').textContent) || 0;
+    document.getElementById('endorseCount').textContent = currentCount + 1;
+    addTagToWall({ name: `${first} ${last}`, org, sector });
+
+    /* Show success state */
+    const formEl = document.getElementById('endorseFormCard');
+    formEl.querySelectorAll('.form-row, .form-check-row, .form-submit, .form-title, .form-subtitle').forEach(el => el.style.display = 'none');
+    document.getElementById('endorseSuccess').style.display = 'block';
+
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Sign the Principles →';
+    btn.style.background = '#a83232';
+    btn.textContent = 'Something went wrong — please try again';
+    setTimeout(() => { btn.style.background = ''; btn.textContent = 'Sign the Principles →'; }, 3000);
+    console.error(err);
+  }
 }
 
 function shakeField(id) {
@@ -1070,6 +1133,9 @@ function shakeField(id) {
   setTimeout(() => { el.style.borderColor = ''; el.style.outline = ''; }, 1800);
   el.focus();
 }
+
+/* Load signatories when page opens */
+loadEndorsers();
 </script>
 </body>
 </html>
