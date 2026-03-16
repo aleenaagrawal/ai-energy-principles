@@ -901,16 +901,69 @@
 
   </div>
 </div>
-<div id="modal" style="display:none; position:fixed; inset:0; z-index:200; background:rgba(13,31,45,0.5); align-items:center; justify-content:center;">
-  <div style="background:var(--surface); border-radius:14px; padding:2rem; width:min(480px, 90vw); box-shadow:0 20px 60px rgba(13,31,45,0.2);">
-    <h3 style="font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:1.25rem; color:var(--navy); font-weight:600;">Add Case Study</h3>
-    <input id="cs-input-title" type="text" placeholder="Title (e.g. Microsoft + Constellation Nuclear Deal)" style="width:100%; margin-bottom:0.75rem; padding:0.6rem 0.85rem; border:1px solid var(--border); border-radius:8px; font-family:'Instrument Sans',sans-serif; font-size:14px; color:var(--ink);" />
-    <input id="cs-input-source" type="text" placeholder="Source / publication" style="width:100%; margin-bottom:0.75rem; padding:0.6rem 0.85rem; border:1px solid var(--border); border-radius:8px; font-family:'Instrument Sans',sans-serif; font-size:14px; color:var(--ink);" />
-    <input id="cs-input-url" type="url" placeholder="https://..." style="width:100%; margin-bottom:1.25rem; padding:0.6rem 0.85rem; border:1px solid var(--border); border-radius:8px; font-family:'Instrument Sans',sans-serif; font-size:14px; color:var(--ink);" />
-    <div style="display:flex; gap:0.75rem; justify-content:flex-end;">
-      <button onclick="closeModal()" style="padding:0.5rem 1.1rem; border:1px solid var(--border-dark); border-radius:8px; background:none; cursor:pointer; font-family:'Instrument Sans',sans-serif; font-size:13px; color:var(--muted);">Cancel</button>
-      <button onclick="saveCase()" style="padding:0.5rem 1.25rem; border:none; border-radius:8px; background:var(--navy); color:white; cursor:pointer; font-family:'Instrument Sans',sans-serif; font-size:13px; font-weight:500;">Add link</button>
+<!-- CASE STUDY SUBMISSION MODAL -->
+<div id="modal" style="display:none; position:fixed; inset:0; z-index:200; background:rgba(13,31,45,0.55); align-items:flex-start; justify-content:center; overflow-y:auto; padding:2rem 1rem;">
+  <div style="background:var(--surface); border-radius:16px; padding:2.25rem; width:min(520px, 100%); box-shadow:0 24px 64px rgba(13,31,45,0.25); margin:auto;">
+
+    <div id="modal-form-view">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:1.5rem;">
+        <div>
+          <div style="font-size:10px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:var(--amber); margin-bottom:0.4rem;" id="modal-principle-label">Principle I</div>
+          <h3 style="font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--navy); font-weight:600; line-height:1.25;">Submit a Case Study</h3>
+        </div>
+        <button onclick="closeModal()" style="background:none; border:none; cursor:pointer; font-size:22px; color:var(--subtle); padding:0; line-height:1; margin-top:2px;">&#215;</button>
+      </div>
+
+      <p style="font-size:13px; font-weight:300; color:var(--muted); margin-bottom:1.5rem; line-height:1.6;">Know a real-world example that illustrates this principle? Submit it for review — approved submissions will appear on the site.</p>
+
+      <div style="display:flex; flex-direction:column; gap:0.75rem;">
+        <div class="form-group">
+          <label class="form-label" for="cs-title">Title *</label>
+          <input class="form-input" type="text" id="cs-title" placeholder="e.g. Microsoft + Constellation Nuclear Deal" />
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+          <div class="form-group">
+            <label class="form-label" for="cs-source">Source / publication *</label>
+            <input class="form-input" type="text" id="cs-source" placeholder="e.g. Bloomberg" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cs-url">Link / URL *</label>
+            <input class="form-input" type="url" id="cs-url" placeholder="https://..." />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cs-desc">Brief description <span style="font-weight:300; text-transform:none; letter-spacing:0;">(optional)</span></label>
+          <textarea class="form-input" id="cs-desc" placeholder="What does this case study show?" style="min-height:72px;"></textarea>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+          <div class="form-group">
+            <label class="form-label" for="cs-name">Your name <span style="font-weight:300; text-transform:none; letter-spacing:0;">(optional)</span></label>
+            <input class="form-input" type="text" id="cs-name" placeholder="Jane Smith" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cs-email">Your email <span style="font-weight:300; text-transform:none; letter-spacing:0;">(optional)</span></label>
+            <input class="form-input" type="email" id="cs-email" placeholder="jane@example.com" />
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg); border-radius:8px; padding:0.85rem 1rem; margin:1.25rem 0; border:1px solid var(--border);">
+        <p style="font-size:12px; font-weight:300; color:var(--subtle); line-height:1.55; margin:0;">Submissions are reviewed before appearing on the site. We will notify you by email if you provided one.</p>
+      </div>
+
+      <div style="display:flex; gap:0.75rem; justify-content:flex-end;">
+        <button onclick="closeModal()" style="padding:0.55rem 1.1rem; border:1px solid var(--border-dark); border-radius:8px; background:none; cursor:pointer; font-family:'Instrument Sans',sans-serif; font-size:13px; color:var(--muted);">Cancel</button>
+        <button id="cs-submit-btn" onclick="submitCaseStudy()" style="padding:0.55rem 1.25rem; border:none; border-radius:8px; background:var(--navy); color:white; cursor:pointer; font-family:'Instrument Sans',sans-serif; font-size:13px; font-weight:500; transition:background 0.15s;">Submit for review &#8594;</button>
+      </div>
     </div>
+
+    <div id="modal-success-view" style="display:none; text-align:center; padding:2rem 1rem;">
+      <div style="width:48px; height:48px; border-radius:50%; background:var(--teal-light); border:1px solid var(--teal-mid); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; font-size:20px; color:var(--teal);">&#10003;</div>
+      <h4 style="font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:600; color:var(--navy); margin-bottom:0.5rem;">Thanks for the submission!</h4>
+      <p style="font-size:13.5px; font-weight:300; color:var(--muted); line-height:1.6; margin-bottom:1.5rem;">Your case study is under review. Once approved, it will appear on the site alongside this principle.</p>
+      <button onclick="closeModal()" style="padding:0.55rem 1.25rem; border:1px solid var(--border-dark); border-radius:8px; background:none; cursor:pointer; font-family:'Instrument Sans',sans-serif; font-size:13px; color:var(--muted);">Close</button>
+    </div>
+
   </div>
 </div>
 
@@ -919,6 +972,17 @@
 </footer>
 
 <script>
+/* ---- AIRTABLE CONFIG ---- */
+const AT_TOKEN  = 'patn92VzFYiPQCCrs.f4962f5f7c37cfedf1341c6bea88425de17c8fabd0ed0b155da0704257e3db4a';
+const AT_BASE   = 'app3lFdXJvCN4vmv2';
+const AT_TABLE  = 'tblV9AL3Q0gipS9Cj';
+const AT_URL    = `https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}`;
+const AT_HEADS  = { 'Authorization': `Bearer ${AT_TOKEN}`, 'Content-Type': 'application/json' };
+
+const AT_CS_TABLE = 'tbl2H7FsOAuN4djtr';
+const AT_CS_URL   = `https://api.airtable.com/v0/${AT_BASE}/${AT_CS_TABLE}`;
+const principleLabels = { 1: 'Principle I', 2: 'Principle II', 3: 'Principle III', 4: 'Principle IV' };
+
 let activeDetail = null;
 let currentPrinciple = null;
 
@@ -955,49 +1019,157 @@ function toggleDetail(n) {
   }
 }
 
-function addCaseStudy(principle) {
-  currentPrinciple = principle;
-  document.getElementById('modal').style.display = 'flex';
-  document.getElementById('cs-input-title').focus();
+/* ---- AIRTABLE CASE STUDIES ---- */
+
+/* Load approved case studies on page load */
+async function loadCaseStudies() {
+  try {
+    const params = encodeURIComponent("Status") + "=" + encodeURIComponent("Approved");
+    let allRecords = [], offset = null;
+    do {
+      const url = AT_CS_URL
+        + '?filterByFormula=' + encodeURIComponent('{Status}="Approved"')
+        + '&fields%5B%5D=Title&fields%5B%5D=Source&fields%5B%5D=URL&fields%5B%5D=Principle&fields%5B%5D=Description'
+        + '&pageSize=100'
+        + (offset ? '&offset=' + offset : '');
+      const res = await fetch(url, { headers: AT_HEADS });
+      const data = await res.json();
+      if (!data.records) break;
+      allRecords = allRecords.concat(data.records);
+      offset = data.offset || null;
+    } while (offset);
+
+    allRecords.forEach(r => {
+      const f = r.fields;
+      const principleNum = parsePrinciple(f.Principle);
+      if (!principleNum) return;
+      renderCaseStudy(principleNum, { title: f.Title, source: f.Source, url: f.URL, desc: f.Description });
+    });
+  } catch(e) {
+    console.warn('Could not load case studies:', e);
+  }
 }
 
-function closeModal() {
-  document.getElementById('modal').style.display = 'none';
-  document.getElementById('cs-input-title').value = '';
-  document.getElementById('cs-input-source').value = '';
-  document.getElementById('cs-input-url').value = '';
+function parsePrinciple(val) {
+  if (!val) return null;
+  const map = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4,
+                'Principle I': 1, 'Principle II': 2, 'Principle III': 3, 'Principle IV': 4,
+                '1': 1, '2': 2, '3': 3, '4': 4 };
+  return map[String(val).trim()] || null;
 }
 
-function saveCase() {
-  const title = document.getElementById('cs-input-title').value.trim();
-  const source = document.getElementById('cs-input-source').value.trim();
-  const url = document.getElementById('cs-input-url').value.trim();
-  if (!title) return;
-
-  const list = document.getElementById('cs-list-' + currentPrinciple);
+function renderCaseStudy(principleNum, { title, source, url, desc }) {
+  const list = document.getElementById('cs-list-' + principleNum);
+  if (!list) return;
   const placeholder = list.querySelector('.cs-placeholder');
   if (placeholder) placeholder.remove();
 
-  const isTeal = tealPrinciples.includes(currentPrinciple);
-
+  const isTeal = tealPrinciples.includes(principleNum);
   const li = document.createElement('li');
   const a = document.createElement('a');
   a.className = 'cs-item';
   a.href = url || '#';
   if (url) a.target = '_blank';
   a.innerHTML = `
-    <div class="cs-tag">${isTeal ? '' : ''}Case study</div>
-    <div class="cs-name">${escHtml(title)}</div>
+    <div class="cs-tag" style="color:${isTeal ? 'var(--teal)' : 'var(--amber)'}">Case study</div>
+    <div class="cs-name">${escHtml(title || '')}</div>
     ${source ? `<div class="cs-source">${escHtml(source)}</div>` : ''}
+    ${desc ? `<div class="cs-source" style="margin-top:4px; font-style:italic;">${escHtml(desc)}</div>` : ''}
   `;
   if (isTeal) {
-    a.classList.add('teal-cs');
     a.addEventListener('mouseenter', () => { a.style.borderColor='var(--teal-mid)'; a.style.background='var(--teal-light)'; });
     a.addEventListener('mouseleave', () => { a.style.borderColor=''; a.style.background=''; });
   }
   li.appendChild(a);
   list.appendChild(li);
-  closeModal();
+}
+
+/* Open submission modal */
+function addCaseStudy(principle) {
+  currentPrinciple = principle;
+  // Reset modal to form view
+  document.getElementById('modal-form-view').style.display = 'block';
+  document.getElementById('modal-success-view').style.display = 'none';
+  // Set principle label
+  const label = document.getElementById('modal-principle-label');
+  if (label) label.textContent = principleLabels[principle] || '';
+  const isTeal = tealPrinciples.includes(principle);
+  if (label) label.style.color = isTeal ? 'var(--teal)' : 'var(--amber)';
+  // Clear fields
+  ['cs-title','cs-source','cs-url','cs-desc','cs-name','cs-email'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  const btn = document.getElementById('cs-submit-btn');
+  if (btn) { btn.disabled = false; btn.textContent = 'Submit for review →'; btn.style.background = ''; }
+  document.getElementById('modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('cs-title').focus(), 50);
+}
+
+/* Submit case study to Airtable as Pending */
+async function submitCaseStudy() {
+  const title  = document.getElementById('cs-title').value.trim();
+  const source = document.getElementById('cs-source').value.trim();
+  const url    = document.getElementById('cs-url').value.trim();
+  const desc   = document.getElementById('cs-desc').value.trim();
+  const name   = document.getElementById('cs-name').value.trim();
+  const email  = document.getElementById('cs-email').value.trim();
+
+  if (!title)  { shakeInputField('cs-title');  return; }
+  if (!source) { shakeInputField('cs-source'); return; }
+  if (!url)    { shakeInputField('cs-url');    return; }
+
+  const btn = document.getElementById('cs-submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  try {
+    const res = await fetch(AT_CS_URL, {
+      method: 'POST',
+      headers: AT_HEADS,
+      body: JSON.stringify({
+        records: [{
+          fields: {
+            'Title':        title,
+            'Source':       source,
+            'URL':          url,
+            'Description':  desc,
+            'Principle':    principleLabels[currentPrinciple] || '',
+            'Submitted By': name,
+            'Email':        email,
+            'Status':       'Pending',
+            'Submitted At': new Date().toISOString(),
+          }
+        }]
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'Airtable error');
+
+    document.getElementById('modal-form-view').style.display = 'none';
+    document.getElementById('modal-success-view').style.display = 'block';
+
+  } catch(err) {
+    btn.disabled = false;
+    btn.style.background = '#a83232';
+    btn.textContent = 'Something went wrong — try again';
+    setTimeout(() => { btn.style.background = ''; btn.textContent = 'Submit for review →'; }, 3000);
+    console.error(err);
+  }
+}
+
+function shakeInputField(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.borderColor = '#e05252';
+  el.style.outline = '2px solid rgba(224,82,82,0.2)';
+  setTimeout(() => { el.style.borderColor = ''; el.style.outline = ''; }, 1800);
+  el.focus();
+}
+
+function closeModal() {
+  document.getElementById('modal').style.display = 'none';
 }
 
 function escHtml(s) {
@@ -1012,13 +1184,6 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeModal();
   if (e.key === 'Enter' && document.getElementById('modal').style.display === 'flex') saveCase();
 });
-
-/* ---- AIRTABLE CONFIG ---- */
-const AT_TOKEN  = 'patn92VzFYiPQCCrs.f4962f5f7c37cfedf1341c6bea88425de17c8fabd0ed0b155da0704257e3db4a';
-const AT_BASE   = 'app3lFdXJvCN4vmv2';
-const AT_TABLE  = 'tblV9AL3Q0gipS9Cj';
-const AT_URL    = `https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}`;
-const AT_HEADS  = { 'Authorization': `Bearer ${AT_TOKEN}`, 'Content-Type': 'application/json' };
 
 const sectorColors = {
   'Renewable Energy': 'teal-dot',
@@ -1136,6 +1301,7 @@ function shakeField(id) {
 
 /* Load signatories when page opens */
 loadEndorsers();
+loadCaseStudies();
 </script>
 </body>
 </html>
