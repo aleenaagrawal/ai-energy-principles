@@ -628,6 +628,151 @@
     .nav-links { display: none; }
     .form-row { grid-template-columns: 1fr; }
   }
+
+  /* REGIONAL CONSIDERATIONS */
+  .regions-wrap {
+    background: var(--navy);
+    padding: 5rem 0;
+  }
+  .regions-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+  }
+  .regions-header {
+    margin-bottom: 3rem;
+  }
+  .regions-eyebrow {
+    font-size: 10.5px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--amber-mid);
+    margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .regions-eyebrow::before {
+    content: ''; display: inline-block;
+    width: 28px; height: 1px; background: var(--amber);
+  }
+  .regions-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #fff;
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+  .regions-heading em { font-style: italic; color: var(--amber-mid); }
+  .regions-desc {
+    font-size: 14.5px; font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.75;
+    max-width: 600px;
+  }
+
+  /* Region tabs */
+  .region-tabs {
+    display: flex; gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 0;
+  }
+  .region-tab {
+    padding: 0.65rem 1.25rem;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 12.5px; font-weight: 400;
+    color: rgba(255,255,255,0.4);
+    background: none; border: none;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    position: relative;
+    bottom: -1px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .region-tab:hover { color: rgba(255,255,255,0.75); }
+  .region-tab.active {
+    color: var(--amber-mid);
+    border-bottom: 2px solid var(--amber);
+    font-weight: 500;
+  }
+
+  /* Region panels */
+  .region-panels { margin-top: 0; }
+  .region-panel {
+    display: none;
+    padding: 2.5rem 0 0;
+    animation: slideDown 0.2s ease;
+  }
+  .region-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+
+  .region-col-label {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .region-context {
+    font-size: 14.5px; font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+  .region-considerations {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 0.85rem;
+  }
+  .region-considerations li {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 14px; font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+  }
+  .region-considerations li::before {
+    content: '';
+    display: inline-block;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--amber-mid);
+    margin-top: 8px; flex-shrink: 0;
+  }
+  .region-considerations.teal li::before { background: var(--teal-mid); }
+
+  .region-stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  .region-stat {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+  }
+  .region-stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 400;
+    color: var(--amber-mid);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .region-stat-value.teal { color: var(--teal-mid); }
+  .region-stat-label {
+    font-size: 12px; font-weight: 300;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 720px) {
+    .region-panel.active { grid-template-columns: 1fr; }
+    .region-tabs { gap: 0.2rem; }
+    .region-tab { padding: 0.5rem 0.85rem; font-size: 12px; }
+  }
+
 </style>
 </head>
 <body>
@@ -638,6 +783,7 @@
     <li><a href="#principles">Principles</a></li>
     <li><a href="#stakeholders">Stakeholders</a></li>
     <li><a href="#callout">Our Commitment</a></li>
+    <li><a href="#regions">Regional Lens</a></li>
     <li><a href="#endorse" style="color:var(--amber-mid); font-weight:500;">Sign On</a></li>
   </ul>
 </nav>
@@ -648,7 +794,7 @@
     <h1>A Framework for <em>AI &amp; Energy</em></h1>
     <p class="hero-sub">Shared principles for shared prosperity — and a sustainable future.</p>
     <div class="hero-rule"></div>
-    <p class="hero-intro">The convergence of artificial intelligence and energy systems presents one of the most consequential opportunities of our era. This opportunity will only be realized if the right stakeholders come together with shared principles, shared accountability, and shared ambition.</p>
+    <p class="hero-intro">The convergence of artificial intelligence and energy systems presents one of the most consequential opportunities of our era. Though we are early on this trajectory now, it seems we have to choose between growth and resources. However, there are ways to leverage this growth for more sustainable resources if stakeholders work together more strategically. In the worst case, we will be left in a world of energy starvation for our populations. But, in the best case, if tech companies, utilities, and policymakers align their incentives, the booming AI market can become one of the most powerful engines for clean energy deployment in history.</p>
   </section>
 </div>
 
@@ -666,8 +812,8 @@
     <!-- Card 2 -->
     <div class="principle-card" id="card-2" onclick="toggleDetail(2)">
       <div class="p-number">Principle II</div>
-      <div class="p-title">Communities Must Have a Seat at the Table</div>
-      <div class="p-preview">The scale of AI-driven energy demand can easily outpace the capacity of local communities to engage and shape decisions that profoundly affect them. Realistic, inclusive dialogue is not optional — it is essential. Communities deserve to understand what is being built and what they stand to gain.</div>
+      <div class="p-title">Communities Must Play a Proactive, Strategic Role</div>
+      <div class="p-preview">The scale of AI-driven energy demand can easily outpace the capacity of local communities to engage and shape decisions that profoundly affect them. Realistic, inclusive dialogue is not optional — it is essential. Communities deserve to understand what is being built and what they stand to gain. For that to be effective, however, communities must also be able to consolidate their viewpoint into a stratified set of choices, ideally reflected in policy.</div>
       <button class="p-expand-btn" id="btn-2"><span>Read more</span><span class="arrow">›</span></button>
     </div>
 
@@ -675,12 +821,12 @@
     <div class="detail-panel" id="detail-1">
       <div class="detail-inner">
         <div>
-          <p class="detail-body">AI infrastructure — data centers, transmission upgrades, grid modernization — represents a massive infusion of capital into communities across the globe. When sited and structured intentionally, these projects can generate lasting local jobs, expand the tax base, spur supply chain investment, and bring new energy infrastructure to underserved regions. We affirm that AI growth, properly channeled, is not just a technology story — it is an economic development story, and communities should be empowered to capture that value.</p>
+          <p class="detail-body">AI infrastructure — data centers, transmission upgrades, grid modernization — represents a massive infusion of capital into communities across the globe. When sited and structured intentionally, these projects can generate lasting local jobs, expand the tax base, spur supply chain investment, and bring new energy infrastructure to underserved regions. AI growth, properly channeled, is not just a technology story — it is an economic development story, and communities should be empowered to capture and shape that value.</p>
           <div class="commitments-title">Commitments under this principle</div>
           <ul class="commitments-list">
-            <li>Prioritize community benefit agreements tied to AI infrastructure siting decisions</li>
-            <li>Support local workforce development and apprenticeship programs tied to new projects</li>
+            <li>Prioritize community voice tied to AI infrastructure siting decisions, using tools like zoning policies or community benefit agreements</li>
             <li>Ensure economic benefits are distributed broadly, not concentrated in already-advantaged markets</li>
+            <li>Support local workforce development and apprenticeship programs tied to new projects</li>
           </ul>
         </div>
         <div class="case-studies-sidebar">
@@ -695,12 +841,12 @@
     <div class="detail-panel" id="detail-2">
       <div class="detail-inner">
         <div>
-          <p class="detail-body">The scale and pace of AI-driven energy demand can easily outpace the capacity of local communities to engage, understand, and shape decisions that profoundly affect them. Realistic, inclusive dialogue is not optional — it is essential. Communities deserve to understand what is being built, what it will cost in terms of land, water, grid capacity, and emissions, and what they stand to gain. No project should proceed without genuine community input, grounded in transparent and accessible information.</p>
+          <p class="detail-body">The scale and pace of AI-driven energy demand can easily outpace the capacity of local communities to engage, understand, and shape decisions that profoundly affect them. Realistic, inclusive dialogue is not optional — it is essential. For that to be effective, however, communities must also be able to consolidate their viewpoint into a stratified set of choices, ideally reflected in policy. No project should proceed without genuine community input, grounded in transparent and accessible information. Often, NDAs can block access to this. Thus, the most effective stance is a proactive one, where communities stratify their priorities before a deal is in the works and have a seat at the table of economic development deals early on.</p>
           <div class="commitments-title">Commitments under this principle</div>
           <ul class="commitments-list">
-            <li>Establish community engagement processes early — before permits, not after announcements</li>
-            <li>Provide clear, jargon-free disclosures on energy use, water use, grid impacts, and projected emissions</li>
-            <li>Invest in civic infrastructure — tools, forums, and resources — that enable communities to evaluate tradeoffs and make informed decisions</li>
+            <li>Establish and consolidate community engagement processes early — before a deal is in the works, not after announcements</li>
+            <li>Provide clear, jargon-free disclosures on energy use, water use, grid impacts, and projected emissions when possible. When not, be clear about what is most important to the community</li>
+            <li>Invest in civic infrastructure — tools, forums, and resources — that enable communities to evaluate tradeoffs and make informed decisions before a deal is on the table</li>
           </ul>
         </div>
         <div class="case-studies-sidebar">
@@ -716,16 +862,16 @@
     <!-- Card 3 -->
     <div class="principle-card" id="card-3" onclick="toggleDetail(3)">
       <div class="p-number">Principle III</div>
-      <div class="p-title">New Stakeholder Coalitions Are Required</div>
-      <div class="p-preview">The challenges at the intersection of AI and energy cannot be solved by any single sector. Utility companies, technology firms, regulators, local governments, environmental advocates, and labor organizations each hold a piece of the solution. We call for the intentional construction of multi-stakeholder coalitions built on trust and shared data.</div>
+      <div class="p-title">Utilize the Opportunity to the Best Place-Based Advantage</div>
+      <div class="p-preview">The challenges at the intersection of AI and energy cannot be solved by any single sector. Utility companies, technology firms, regulators, local governments, environmental advocates, and labor organizations each hold a piece of the solution. In order to do that, find new ways to align priorities of these entities.</div>
       <button class="p-expand-btn" id="btn-3"><span>Read more</span><span class="arrow">›</span></button>
     </div>
 
     <!-- Card 4 -->
     <div class="principle-card" id="card-4" onclick="toggleDetail(4)">
       <div class="p-number">Principle IV</div>
-      <div class="p-title">AI Growth Must Accelerate the Energy Transition</div>
-      <div class="p-preview">The explosion in AI energy demand is not inherently a climate threat — but it will become one without deliberate action. Conversely, if tech companies, utilities, and policymakers align their incentives, the booming AI market can become one of the most powerful engines for clean energy deployment in history.</div>
+      <div class="p-title">Adopt a Deal-Making Hat and Go To Market Together</div>
+      <div class="p-preview">Speed-to-power is the most important metric for landing deals now – and working in stakeholder unison signals alignment in a landscape wrought with disagreements. Unique collaborations will separate regions in the marketplace and help communities keep the upper hand in negotiations when approached proactively. The likely scenario is that a new data center will come near you – control the terms for it yourselves.</div>
       <button class="p-expand-btn" id="btn-4"><span>Read more</span><span class="arrow">›</span></button>
     </div>
 
@@ -733,12 +879,12 @@
     <div class="detail-panel teal-accent" id="detail-3">
       <div class="detail-inner">
         <div>
-          <p class="detail-body">The challenges at the intersection of AI and energy cannot be solved by any single sector. Utility companies, technology firms, regulators, local governments, environmental advocates, labor organizations, and community groups each hold a piece of the solution. Success will require new forms of coordination that did not exist a decade ago. We call for the intentional construction of multi-stakeholder coalitions built on trust, mutual accountability, and shared data — not ad hoc negotiations driven by crisis.</p>
+          <p class="detail-body">The challenges at the intersection of AI and energy cannot be solved by any single sector. Utility companies, technology firms, regulators, local governments, environmental advocates, labor organizations, and community groups each hold a piece of the solution. In order to do that, find new ways to align priorities of these entities. Success will require new forms of coordination that did not exist a decade ago.</p>
           <div class="commitments-title">Commitments under this principle</div>
           <ul class="commitments-list teal-accent">
-            <li>Establish standing multi-stakeholder forums at regional, national, and international levels</li>
-            <li>Develop shared data standards and load forecasting methodologies that all parties can trust and verify</li>
-            <li>Create accountability mechanisms so commitments made in coalitions are honored and enforced</li>
+            <li>Establish standing multi-stakeholder forums at regional, national, and international levels to set standards for best-in-class projects</li>
+            <li>Use long-term AI energy demand as an anchor for financing new renewable and storage projects in regions that need it most</li>
+            <li>Align AI infrastructure timelines with grid decarbonization roadmaps, avoiding investments that lock in fossil fuel dependency</li>
           </ul>
         </div>
         <div class="case-studies-sidebar">
@@ -753,12 +899,12 @@
     <div class="detail-panel teal-accent" id="detail-4">
       <div class="detail-inner">
         <div>
-          <p class="detail-body">The explosion in AI energy demand is not inherently a climate threat — but it will become one without deliberate action. Conversely, if tech companies, utilities, and policymakers align their incentives, the booming AI market can become one of the most powerful engines for clean energy deployment in history: driving demand for new renewables, anchoring financing for grid storage, spurring transmission buildout, and providing the stable offtake commitments that clean energy developers need to build. AI and a clean energy future are not in conflict. They can and must reinforce one another.</p>
+          <p class="detail-body">Speed-to-power is the most important metric for landing deals now – and working in stakeholder unison signals alignment in a landscape wrought with disagreements. Unique collaborations will separate regions in the marketplace and help communities keep the upper hand in negotiations when approached proactively. The likely scenario is that a new data center will come near you – control the terms for it yourselves. Ensure that your economic development policies and energy policies work hand-in-hand to ease the process for new deals and can be used to benefit one another.</p>
           <div class="commitments-title">Commitments under this principle</div>
           <ul class="commitments-list teal-accent">
-            <li>Require AI data center developers to source power with high additionality, prioritizing new clean energy generation over unbundled credits</li>
-            <li>Use long-term AI energy demand as an anchor for financing new renewable and storage projects in regions that need it most</li>
-            <li>Align AI infrastructure timelines with grid decarbonization roadmaps, avoiding investments that lock in fossil fuel dependency</li>
+            <li>Build proper multi-stakeholder communication channels and approach new projects together</li>
+            <li>Understand who leads projects, who contributes, and at what stage each leader is brought in</li>
+            <li>Be loud about your goals, and staunch about what you’re not willing to give up</li>
           </ul>
         </div>
         <div class="case-studies-sidebar">
@@ -776,7 +922,7 @@
   <!-- CALLOUT -->
   <div class="callout" id="callout">
     <div class="callout-amber-bar"></div>
-    <div class="callout-text">AI is arriving whether we plan for it or not. The question is whether we choose to harness it — for our communities, our economies, and our climate.</div>
+    <div class="callout-text">For the first time ever, our potential for growth is constrained by energy. The question is how we choose to embrace this challenge and how we harness its strengths — for our communities, our economies, and our climate.</div>
     <div class="callout-attr">Global Principles for AI &amp; Energy</div>
   </div>
 
@@ -802,6 +948,214 @@
   </div>
 
 </section>
+
+
+<!-- REGIONAL CONSIDERATIONS -->
+<div class="regions-wrap" id="regions">
+  <div class="regions-inner">
+
+    <div class="regions-header">
+      <div class="regions-eyebrow">A Global Challenge</div>
+      <h2 class="regions-heading">Considerations for <em>different parts</em> of the world</h2>
+      <p class="regions-desc">These principles apply globally, but the path to implementing them looks different depending on where you are. Select a region to explore the specific context, opportunities, and considerations.</p>
+    </div>
+
+    <div class="region-tabs">
+      <button class="region-tab active" onclick="showRegion('americas', this)">The Americas</button>
+      <button class="region-tab" onclick="showRegion('europe', this)">Europe</button>
+      <button class="region-tab" onclick="showRegion('africa', this)">Africa</button>
+      <button class="region-tab" onclick="showRegion('asia', this)">Asia</button>
+      <button class="region-tab" onclick="showRegion('oceania', this)">Oceania</button>
+    </div>
+
+    <div class="region-panels">
+
+      <!-- AMERICAS -->
+      <div class="region-panel active" id="region-americas">
+        <div>
+          <div class="region-col-label">Regional Context</div>
+          <p class="region-context">The Americas span the world's largest AI market in the US, rapidly industrializing economies in Latin America, and communities with deep energy access disparities. The region faces an acute tension between the pace of hyperscaler buildout and the capacity of grid infrastructure and communities to absorb it.</p>
+          <ul class="region-considerations">
+            <li>US grid interconnection queues are backlogged by years — new data center demand is accelerating the bottleneck and raising questions about queue priority for clean energy vs. load</li>
+            <li>Latin American countries with strong renewable resources (Chile, Brazil, Colombia) are emerging as viable data center markets but lack the policy frameworks to ensure community benefit</li>
+            <li>Indigenous land rights and water access are critical flashpoints, particularly in the southwestern US and across resource-rich regions of South America</li>
+            <li>State-level energy regulation in the US creates a patchwork — what works in Texas may be impossible in California, and vice versa</li>
+            <li>Canada's clean grid and political stability make it attractive, but First Nations consultation requirements must be meaningfully integrated, not treated as a checkbox</li>
+          </ul>
+        </div>
+        <div>
+          <div class="region-col-label">Key Metrics &amp; Opportunities</div>
+          <div class="region-stat-grid">
+            <div class="region-stat">
+              <div class="region-stat-value">~40%</div>
+              <div class="region-stat-label">Share of global data center capacity currently in North America</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value teal">2,600+</div>
+              <div class="region-stat-label">GW of clean energy waiting in US interconnection queues</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value">Brazil</div>
+              <div class="region-stat-label">Largest data center market in Latin America, 85% renewable grid</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value teal">Chile</div>
+              <div class="region-stat-label">Among the world's best solar resources and growing digital hub ambitions</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EUROPE -->
+      <div class="region-panel" id="region-europe">
+        <div>
+          <div class="region-col-label">Regional Context</div>
+          <p class="region-context">Europe leads globally on regulatory frameworks for both AI (EU AI Act) and energy (Green Deal, REPowerEU), but faces serious constraints: high energy costs post-Ukraine, ambitious decarbonization targets, and growing public backlash to data center land and water use. Europe is where the policy architecture is most advanced — and where the tension between ambition and delivery is most visible.</p>
+          <ul class="region-considerations">
+            <li>The EU AI Act and GDPR create data sovereignty requirements that shape where AI infrastructure can be located — compliance and energy strategy must be co-designed</li>
+            <li>Nordic countries (Sweden, Finland, Denmark) offer clean grids and cool climates ideal for data centers, but face increasing community resistance and grid capacity limits</li>
+            <li>Water use for cooling is a growing political issue — several European municipalities have blocked or conditioned data center approvals on water efficiency standards</li>
+            <li>Corporate PPAs and Guarantees of Origin are widely used but face scrutiny over additionality — Europe is where the "24/7 clean energy" standard is being most rigorously debated</li>
+            <li>Eastern Europe (Poland, Romania, Czech Republic) represents an emerging opportunity with improving connectivity and lower costs, but grid carbon intensity remains high</li>
+          </ul>
+        </div>
+        <div>
+          <div class="region-col-label">Key Metrics &amp; Opportunities</div>
+          <div class="region-stat-grid">
+            <div class="region-stat">
+              <div class="region-stat-value">2026</div>
+              <div class="region-stat-label">EU AI Act phased compliance deadline, shaping infrastructure decisions now</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value teal">~69%</div>
+              <div class="region-stat-label">Share of electricity from renewables in Sweden — top data center host</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value">Ireland</div>
+              <div class="region-stat-label">Hosts ~70% of EU hyperscaler capacity — now facing grid moratoriums</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value teal">REPowerEU</div>
+              <div class="region-stat-label">€300B plan to accelerate renewables — a potential anchor for AI load alignment</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AFRICA -->
+      <div class="region-panel" id="region-africa">
+        <div>
+          <div class="region-col-label">Regional Context</div>
+          <p class="region-context">Africa represents the most acute opportunity and the highest risk of the AI-energy nexus. The continent has extraordinary renewable resources — solar, wind, hydro, geothermal — and the world's fastest-growing population and urbanization rate. But energy access remains deeply unequal, and there is a real danger that AI infrastructure investment extracts value from Africa rather than building it there.</p>
+          <ul class="region-considerations">
+            <li>600+ million Africans still lack access to electricity — any AI infrastructure strategy that doesn't address energy access as a co-priority risks deepening inequality</li>
+            <li>South Africa, Nigeria, Kenya, and Egypt are the primary data center markets — but infrastructure quality, grid stability, and policy certainty vary enormously between them</li>
+            <li>Africa's renewable resource potential is the largest in the world but remains almost entirely undeveloped — AI demand could serve as an anchor tenant to unlock investment</li>
+            <li>Subsea cable infrastructure (especially on the East and West coasts) is rapidly improving connectivity but latency and reliability remain barriers for latency-sensitive AI workloads</li>
+            <li>Community benefit and local ownership structures are essential — extractive models that ship data offshore without local value creation will face growing political resistance</li>
+            <li>Continental policy frameworks (African Union, AfCFTA) are nascent but could play a critical role in establishing cross-border data and energy standards</li>
+          </ul>
+        </div>
+        <div>
+          <div class="region-col-label">Key Metrics &amp; Opportunities</div>
+          <div class="region-stat-grid">
+            <div class="region-stat">
+              <div class="region-stat-value">600M+</div>
+              <div class="region-stat-label">People without electricity access — the equity imperative is acute</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value teal">7,000+</div>
+              <div class="region-stat-label">TWh/yr of untapped solar potential across the Sahara alone</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value">Kenya</div>
+              <div class="region-stat-label">90%+ renewable grid powered by geothermal and hydro — a standout hub</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value teal">$5B+</div>
+              <div class="region-stat-label">Data center investment committed across Africa 2023–2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ASIA -->
+      <div class="region-panel" id="region-asia">
+        <div>
+          <div class="region-col-label">Regional Context</div>
+          <p class="region-context">Asia is home to the world's fastest-growing AI markets, the largest manufacturing base for AI hardware, and some of the most carbon-intensive grids on earth. The region's diversity is extreme — Singapore's ultra-efficient city-state model sits alongside India's rapidly expanding but coal-heavy grid, and China's state-directed AI buildout follows entirely different logic from Southeast Asia's fragmented markets.</p>
+          <ul class="region-considerations">
+            <li>China's state-directed AI and energy strategy operates largely outside the stakeholder coalition model — but its supply chain dominance in solar and batteries shapes the global picture</li>
+            <li>India is building data center capacity at scale but over 70% of its grid is still coal — the tension between AI growth and decarbonization commitments is acute and unresolved</li>
+            <li>Singapore has imposed a moratorium on new data centers due to land and power constraints — its successor model (with strict efficiency standards) is a global reference point</li>
+            <li>Southeast Asia (Malaysia, Thailand, Indonesia) is emerging as a major data center destination due to lower costs and improving connectivity, but grid carbon intensity varies widely</li>
+            <li>Japan and South Korea are advanced markets with ambitious AI strategies and clean energy commitments, but face energy security constraints that complicate rapid grid decarbonization</li>
+            <li>Water stress is a critical risk across South and Southeast Asia — monsoon variability and groundwater depletion make cooling strategies a frontline planning issue</li>
+          </ul>
+        </div>
+        <div>
+          <div class="region-col-label">Key Metrics &amp; Opportunities</div>
+          <div class="region-stat-grid">
+            <div class="region-stat">
+              <div class="region-stat-value">India</div>
+              <div class="region-stat-label">Fastest-growing data center market globally — with a 70% coal grid</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value teal">500GW</div>
+              <div class="region-stat-label">India's 2030 renewable target — AI demand could accelerate delivery</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value">&lt;2%</div>
+              <div class="region-stat-label">Singapore's land area — why efficiency standards, not growth, define its model</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value teal">$30B+</div>
+              <div class="region-stat-label">Hyperscaler data center commitments to Southeast Asia announced 2023–2024</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OCEANIA -->
+      <div class="region-panel" id="region-oceania">
+        <div>
+          <div class="region-col-label">Regional Context</div>
+          <p class="region-context">Oceania — anchored by Australia and New Zealand — punches above its weight in AI adoption and digital infrastructure ambition, but faces distinct geographic and political realities. Australia's grid is undergoing one of the world's most rapid coal-to-renewables transitions, creating both opportunity and instability. Pacific Island nations face an entirely different challenge: existential climate risk that makes the AI-energy nexus a matter of survival, not just strategy.</p>
+          <ul class="region-considerations">
+            <li>Australia is rapidly retiring coal and scaling renewables, but grid stability is a live challenge — new data center load needs to be matched with storage and transmission investment, not just generation</li>
+            <li>New Zealand's near-100% renewable grid (hydro-dominated) makes it an attractive host for clean AI infrastructure, but its small population limits scale and its earthquake risk requires resilience planning</li>
+            <li>Pacific Island nations are on the frontline of climate change — any regional AI and energy framework must center their vulnerability and ensure they are not further disadvantaged by resource allocation</li>
+            <li>Australia's critical minerals endowment (lithium, cobalt, rare earths) positions it as a potential anchor in the AI supply chain — the opportunity to link mining, processing, and clean energy is significant</li>
+            <li>Indigenous land rights (Native Title in Australia, customary land in Pacific nations) require deep and early engagement, not afterthought consultation</li>
+            <li>Connectivity to Southeast Asia and the US via subsea cables is improving but remains a latency constraint for real-time AI workloads</li>
+          </ul>
+        </div>
+        <div>
+          <div class="region-col-label">Key Metrics &amp; Opportunities</div>
+          <div class="region-stat-grid">
+            <div class="region-stat">
+              <div class="region-stat-value">~38%</div>
+              <div class="region-stat-label">Australia's current renewable share — targeting 82% by 2030</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value teal">~85%</div>
+              <div class="region-stat-label">New Zealand's renewable electricity share — among the highest globally</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value">1.5°C</div>
+              <div class="region-stat-label">Warming threshold that would displace millions in low-lying Pacific nations</div>
+            </div>
+            <div class="region-stat">
+              <div class="region-stat-value teal">AU$330B</div>
+              <div class="region-stat-label">Estimated investment needed in Australia's grid to reach 2030 clean energy targets</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- ENDORSEMENT SECTION -->
 <div class="endorse-wrap" id="endorse">
@@ -1297,6 +1651,15 @@ function shakeField(id) {
   el.style.outline = '2px solid rgba(224,82,82,0.2)';
   setTimeout(() => { el.style.borderColor = ''; el.style.outline = ''; }, 1800);
   el.focus();
+}
+
+
+/* ---- REGIONAL TABS ---- */
+function showRegion(id, btn) {
+  document.querySelectorAll('.region-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.region-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('region-' + id).classList.add('active');
+  btn.classList.add('active');
 }
 
 /* Load signatories when page opens */
