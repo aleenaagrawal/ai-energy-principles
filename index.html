@@ -773,6 +773,114 @@
     .region-tab { padding: 0.5rem 0.85rem; font-size: 12px; }
   }
 
+
+  /* STAKEHOLDER PILLS — see updated styles below */
+
+
+  /* ── STAKEHOLDER PILLS + CTA PANEL ── */
+  .stakeholders-wrap {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .stakeholder-pills {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .s-pill {
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--border-dark);
+    border-radius: 100px;
+    font-size: 12.5px; font-weight: 400;
+    color: var(--muted);
+    background: var(--surface);
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .s-pill:hover { background: var(--cream); color: var(--ink); }
+  .s-pill.amber { border-color: var(--amber-mid); color: var(--amber); background: var(--amber-light); }
+  .s-pill.amber:hover, .s-pill.amber.active { background: #e8d3b0; border-color: var(--amber); color: var(--amber); }
+  .s-pill.teal { border-color: var(--teal-mid); color: var(--teal); background: var(--teal-light); }
+  .s-pill.teal:hover, .s-pill.teal.active { background: #b8ddd8; border-color: var(--teal); color: var(--teal); }
+  .s-pill.active {
+    background: var(--navy); color: #fff;
+    border-color: var(--navy);
+    font-weight: 500;
+  }
+  .s-pill.amber.active { background: var(--amber); color: #fff; border-color: var(--amber); }
+  .s-pill.teal.active  { background: var(--teal);  color: #fff; border-color: var(--teal); }
+
+  /* CTA panel */
+  .s-cta-panel {
+    background: var(--navy);
+    border-radius: 14px;
+    padding: 1.75rem;
+    position: sticky;
+    top: 80px;
+    min-height: 200px;
+    transition: opacity 0.2s;
+  }
+  .s-cta-empty {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 180px; text-align: center;
+  }
+  .s-cta-empty-icon {
+    font-size: 28px; margin-bottom: 0.75rem; opacity: 0.25;
+  }
+  .s-cta-empty-text {
+    font-size: 13px; font-weight: 300;
+    color: rgba(255,255,255,0.3);
+    line-height: 1.55; font-style: italic;
+  }
+  .s-cta-content { display: none; animation: fadeInTag 0.2s ease; }
+  .s-cta-content.visible { display: block; }
+  .s-cta-eyebrow {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--amber-mid);
+    margin-bottom: 0.5rem;
+  }
+  .s-cta-content.teal-mode .s-cta-eyebrow { color: var(--teal-mid); }
+  .s-cta-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 600;
+    color: #fff;
+    line-height: 1.25;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+  .s-cta-label {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 0.65rem;
+  }
+  .s-cta-list {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  .s-cta-list li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px; font-weight: 300;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.55;
+  }
+  .s-cta-list li::before {
+    content: '';
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--amber-mid);
+    margin-top: 7px; flex-shrink: 0;
+  }
+  .s-cta-content.teal-mode .s-cta-list li::before { background: var(--teal-mid); }
+
+  @media (max-width: 860px) {
+    .stakeholders-wrap { grid-template-columns: 1fr; }
+    .s-cta-panel { position: static; }
+  }
+
 </style>
 </head>
 <body>
@@ -929,21 +1037,38 @@
   <!-- STAKEHOLDERS -->
   <div class="stakeholders" id="stakeholders">
     <div class="section-eyebrow">Who must come together</div>
-    <div class="stakeholder-pills">
-      <span class="pill amber">Technology companies</span>
-      <span class="pill amber">Hyperscalers &amp; data center operators</span>
-      <span class="pill">Investor-owned utilities</span>
-      <span class="pill">Public power &amp; co-ops</span>
-      <span class="pill teal">Renewable energy developers</span>
-      <span class="pill teal">Grid storage &amp; transmission</span>
-      <span class="pill">State &amp; local regulators</span>
-      <span class="pill">Federal policymakers</span>
-      <span class="pill">Community organizations</span>
-      <span class="pill">Labor &amp; workforce</span>
-      <span class="pill teal">Environmental advocates</span>
-      <span class="pill">Indigenous &amp; frontline communities</span>
-      <span class="pill">Academic &amp; research institutions</span>
-      <span class="pill">International bodies</span>
+    <div class="stakeholders-wrap">
+
+      <div class="stakeholder-pills" id="stakeholderPills">
+        <span class="s-pill amber" data-key="tech">Technology companies</span>
+        <span class="s-pill amber" data-key="hyper">Hyperscalers &amp; data center operators</span>
+        <span class="s-pill" data-key="iou">Investor-owned utilities</span>
+        <span class="s-pill" data-key="pubpower">Public power &amp; co-ops</span>
+        <span class="s-pill teal" data-key="renewdev">Renewable energy developers</span>
+        <span class="s-pill teal" data-key="storage">Grid storage &amp; transmission</span>
+        <span class="s-pill" data-key="statereg">State &amp; local regulators</span>
+        <span class="s-pill" data-key="fedpolicy">Federal policymakers</span>
+        <span class="s-pill" data-key="community">Community organizations</span>
+        <span class="s-pill" data-key="labor">Labor &amp; workforce</span>
+        <span class="s-pill teal" data-key="enviro">Environmental advocates</span>
+        <span class="s-pill" data-key="indigenous">Indigenous &amp; frontline communities</span>
+        <span class="s-pill" data-key="academic">Academic &amp; research institutions</span>
+        <span class="s-pill" data-key="intl">International bodies</span>
+      </div>
+
+      <div class="s-cta-panel" id="sCtaPanel">
+        <div class="s-cta-empty" id="sCtaEmpty">
+          <div class="s-cta-empty-icon">&#8594;</div>
+          <p class="s-cta-empty-text">Select any stakeholder to see how they can use these principles</p>
+        </div>
+        <div class="s-cta-content" id="sCtaContent">
+          <div class="s-cta-eyebrow">Your role</div>
+          <div class="s-cta-name" id="sCtaName"></div>
+          <div class="s-cta-label">How you can use these principles</div>
+          <ul class="s-cta-list" id="sCtaList"></ul>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1665,6 +1790,178 @@ function showRegion(id, btn) {
 /* Load signatories when page opens */
 loadEndorsers();
 loadCaseStudies();
+
+/* ---- STAKEHOLDER CTA DATA ---- */
+const stakeholderCTAs = {
+  tech: {
+    label: "Technology companies",
+    color: "amber",
+    ctas: [
+      "Publish a site selection scorecard that weights community benefit and grid additionality alongside cost and latency",
+      "Commit to 24/7 clean energy matching for all new facilities announced after a set date — and make it publicly verifiable",
+      "Submit a case study to this site showing where you've applied one of these principles"
+    ]
+  },
+  hyper: {
+    label: "Hyperscalers & data center operators",
+    color: "amber",
+    ctas: [
+      "Share load forecasts with the relevant utility 24 months before target energization — not 6",
+      "Establish a funded community liaison role for every project above a threshold MW with real authority to shape project terms",
+      "Pilot a co-planning process with one utility and one community organization using these principles as the operating framework"
+    ]
+  },
+  iou: {
+    label: "Investor-owned utilities",
+    color: "neutral",
+    ctas: [
+      "Publish your 5-year AI load forecast methodology — transparency here builds trust with regulators and communities before a crisis forces it",
+      "Open a conversation with your state commission about a dedicated AI load tariff class with community benefit conditions attached",
+      "Commission an additionality audit of your current large-load clean energy agreements"
+    ]
+  },
+  pubpower: {
+    label: "Public power & co-ops",
+    color: "neutral",
+    ctas: [
+      "Use your member-owned structure as a differentiator — develop an AI siting policy that explicitly ties new load to local economic benefit",
+      "Partner with neighboring co-ops to build regional load forecasting capacity you couldn't develop alone",
+      "Engage your member communities on AI demand before a developer approaches you — shape the conversation proactively"
+    ]
+  },
+  renewdev: {
+    label: "Renewable energy developers",
+    color: "teal",
+    ctas: [
+      "Approach AI developers directly with long-term PPA structures that meet additionality standards — don't wait for an RFP",
+      "Build community benefit terms into your project financing from day one, not as an afterthought",
+      "Engage in interconnection queue reform advocacy — a faster, fairer queue benefits everyone including your pipeline"
+    ]
+  },
+  storage: {
+    label: "Grid storage & transmission",
+    color: "teal",
+    ctas: [
+      "Work with utilities and AI developers on co-located storage models that firm up renewable supply for large loads",
+      "Advocate for transmission planning processes that treat AI demand as a long-term anchor, not a speculative spike",
+      "Develop flexible interconnection products specifically designed for data center load profiles"
+    ]
+  },
+  statereg: {
+    label: "State & local regulators",
+    color: "neutral",
+    ctas: [
+      "Add an AI energy impact assessment requirement to your data center permitting process",
+      "Convene your utility regulator and your economic development office — most states have never put those two in the same room on AI",
+      "Adopt these principles as a reference standard in your next energy or economic development RFP"
+    ]
+  },
+  fedpolicy: {
+    label: "Federal policymakers",
+    color: "neutral",
+    ctas: [
+      "Commission a national AI load and grid capacity gap analysis and make it public",
+      "Establish federal standards for community benefit agreements as a condition of data center tax incentives",
+      "Reform interconnection queue rules to give priority to projects pairing new AI load with new clean generation"
+    ]
+  },
+  community: {
+    label: "Community organizations",
+    color: "neutral",
+    ctas: [
+      "Draft a community benefit agreement template before any developer comes to you — having a template ready flips the negotiating dynamic entirely",
+      "Map the AI infrastructure risk and opportunity in your region: which substations are candidates, what land is available, who owns it",
+      "Submit a public comment to your state utility commission asking them to adopt Principle II as a condition of data center interconnection approvals"
+    ]
+  },
+  labor: {
+    label: "Labor & workforce",
+    color: "neutral",
+    ctas: [
+      "Negotiate apprenticeship and local hire requirements into data center construction and operations agreements before ground breaks",
+      "Build relationships with AI developers and utilities now — workforce pipeline agreements take years to set up",
+      "Advocate for job quality standards — not just job quantity — in community benefit agreements tied to AI projects"
+    ]
+  },
+  enviro: {
+    label: "Environmental advocates",
+    color: "teal",
+    ctas: [
+      "Develop a clear, evidence-based position on AI energy demand that distinguishes between projects that accelerate clean energy and those that lock in fossil fuels",
+      "Push for mandatory water use disclosure and efficiency standards as a condition of data center permits",
+      "Engage in interconnection queue reform — getting clean energy built faster is the single highest-leverage intervention available"
+    ]
+  },
+  indigenous: {
+    label: "Indigenous & frontline communities",
+    color: "neutral",
+    ctas: [
+      "Assert your right to free, prior, and informed consent before any AI infrastructure siting process reaches the permit stage",
+      "Build a regional network with other frontline communities facing similar pressures — coordinated voices carry far more weight",
+      "Demand that community benefit agreements include enforceable environmental monitoring and remediation commitments, not just job promises"
+    ]
+  },
+  academic: {
+    label: "Academic & research institutions",
+    color: "neutral",
+    ctas: [
+      "Publish independent analyses of AI energy demand forecasts — the field is currently dominated by industry projections with no external check",
+      "Develop open-source tools for communities to model the costs and benefits of proposed AI infrastructure projects",
+      "Partner with utilities and regulators on grid planning research that integrates AI demand scenarios into long-term resource planning"
+    ]
+  },
+  intl: {
+    label: "International bodies",
+    color: "neutral",
+    ctas: [
+      "Establish a global data center energy and emissions disclosure standard — voluntary frameworks have failed to produce consistent data",
+      "Create a multilateral fund specifically for AI energy access in the Global South, structured to build local capacity rather than extract value",
+      "Broker bilateral agreements between AI-demand countries and renewable-resource-rich countries to align infrastructure investment"
+    ]
+  }
+};
+
+/* ---- STAKEHOLDER CTA PANEL ---- */
+(function() {
+  const panel   = document.getElementById('sCtaPanel');
+  const empty   = document.getElementById('sCtaEmpty');
+  const content = document.getElementById('sCtaContent');
+  const nameEl  = document.getElementById('sCtaName');
+  const listEl  = document.getElementById('sCtaList');
+  let   active  = null;
+
+  function selectPill(pill) {
+    const key  = pill.dataset.key;
+    const data = stakeholderCTAs[key];
+    if (!data) return;
+
+    // deselect previous
+    if (active && active !== pill) active.classList.remove('active');
+    // toggle off if same
+    if (active === pill) {
+      pill.classList.remove('active');
+      content.classList.remove('visible');
+      empty.style.display = 'flex';
+      active = null;
+      return;
+    }
+
+    pill.classList.add('active');
+    active = pill;
+
+    nameEl.textContent = data.label;
+    listEl.innerHTML   = data.ctas.map(c => `<li>${c}</li>`).join('');
+
+    const isTeal = data.color === 'teal';
+    content.className = 's-cta-content visible' + (isTeal ? ' teal-mode' : '');
+    empty.style.display = 'none';
+  }
+
+  document.querySelectorAll('.s-pill').forEach(pill => {
+    pill.addEventListener('click', () => selectPill(pill));
+  });
+})();
+
 </script>
 </body>
 </html>
