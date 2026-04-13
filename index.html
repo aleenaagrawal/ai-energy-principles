@@ -881,6 +881,270 @@
     .s-cta-panel { position: static; }
   }
 
+
+  /* ── DECISION TOOL ── */
+  .tool-wrap {
+    background: var(--bg);
+    padding: 5rem 0;
+    border-top: 1px solid var(--border);
+  }
+  .tool-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+  }
+  .tool-header { margin-bottom: 2.5rem; }
+  .tool-eyebrow {
+    font-size: 10.5px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .tool-eyebrow::before {
+    content: ''; display: inline-block;
+    width: 28px; height: 1px; background: var(--amber);
+  }
+  .tool-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--navy);
+    font-weight: 400;
+    margin-bottom: 0.85rem;
+  }
+  .tool-heading em { font-style: italic; color: var(--amber); }
+  .tool-desc {
+    font-size: 15px; font-weight: 300;
+    color: var(--muted); line-height: 1.7;
+    max-width: 580px;
+    margin-bottom: 1.5rem;
+  }
+  .tool-actions {
+    display: flex; gap: 0.75rem; flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+  .tool-btn {
+    padding: 0.6rem 1.25rem;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 12.5px; font-weight: 500;
+    border-radius: 8px; cursor: pointer;
+    transition: all 0.15s; letter-spacing: 0.03em;
+  }
+  .tool-btn-primary {
+    background: var(--navy); color: #fff; border: none;
+  }
+  .tool-btn-primary:hover { background: var(--navy-mid); }
+  .tool-btn-secondary {
+    background: none; color: var(--navy);
+    border: 1px solid var(--border-dark);
+  }
+  .tool-btn-secondary:hover { background: var(--cream); }
+
+  /* Sections */
+  .tool-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+  }
+  .tool-section-header {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--warm-white);
+  }
+  .tool-section-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 500; color: #fff;
+    flex-shrink: 0;
+  }
+  .tool-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 600;
+    color: var(--navy); letter-spacing: -0.01em;
+    flex: 1;
+  }
+  .tool-section-time {
+    font-size: 11px; font-weight: 400;
+    color: var(--subtle); letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  .tool-section-body { padding: 1.5rem; }
+
+  /* Form elements */
+  .tool-field-group {
+    display: flex; flex-direction: column; gap: 0.3rem;
+    margin-bottom: 1rem;
+  }
+  .tool-label {
+    font-size: 10.5px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--subtle);
+  }
+  .tool-input {
+    padding: 0.55rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 14px; color: var(--ink);
+    background: var(--surface); outline: none;
+    transition: border-color 0.15s; width: 100%;
+  }
+  .tool-input:focus { border-color: var(--amber-mid); }
+  .tool-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .tool-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
+
+  /* Checkbox items */
+  .tool-check-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+  .tool-check-item {
+    display: flex; align-items: flex-start; gap: 0.6rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.12s;
+    background: var(--surface);
+  }
+  .tool-check-item:hover { border-color: var(--amber-mid); background: var(--amber-light); }
+  .tool-check-item.checked {
+    border-color: var(--amber);
+    background: var(--amber-light);
+  }
+  .tool-check-item.teal-check:hover { border-color: var(--teal-mid); background: var(--teal-light); }
+  .tool-check-item.teal-check.checked { border-color: var(--teal); background: var(--teal-light); }
+  .tool-check-item input[type="checkbox"] { accent-color: var(--amber); margin-top: 2px; flex-shrink: 0; }
+  .tool-check-item.teal-check input { accent-color: var(--teal); }
+  .tool-check-text { font-size: 13.5px; font-weight: 300; color: var(--ink); line-height: 1.5; }
+
+  /* Alerts */
+  .tool-alert {
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    font-size: 13px; font-weight: 400;
+    line-height: 1.55;
+    margin: 0.75rem 0;
+    display: none;
+  }
+  .tool-alert.visible { display: flex; align-items: flex-start; gap: 0.6rem; }
+  .tool-alert-warn {
+    background: #FEF3C7; border: 1px solid #D97706; color: #92400E;
+  }
+  .tool-alert-stop {
+    background: #FEE2E2; border: 1px solid #DC2626; color: #991B1B;
+  }
+  .tool-alert-ok {
+    background: var(--teal-light); border: 1px solid var(--teal-mid); color: var(--teal);
+  }
+
+  /* Principle mini cards */
+  .tool-principle {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .tool-principle-header {
+    padding: 0.7rem 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .tool-principle-header.amber { background: var(--amber-light); border-bottom: 1px solid rgba(200,135,58,0.2); }
+  .tool-principle-header.teal  { background: var(--teal-light);  border-bottom: 1px solid rgba(31,122,110,0.2); }
+  .tool-principle-tag {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .tool-principle-header.amber .tool-principle-tag { color: var(--amber); }
+  .tool-principle-header.teal  .tool-principle-tag { color: var(--teal); }
+  .tool-principle-name {
+    font-size: 13px; font-weight: 500; color: var(--navy);
+  }
+  .tool-principle-body { padding: 1rem 1rem 0.5rem; }
+
+  /* Tradeoff */
+  .tool-priority-row {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border); border-radius: 8px;
+    margin-bottom: 0.5rem;
+    background: var(--surface);
+  }
+  .tool-priority-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; flex-shrink: 0;
+  }
+  .tool-priority-num.p1 { background: #FEE2E2; color: #991B1B; }
+  .tool-priority-num.p2 { background: var(--amber-light); color: var(--amber); }
+  .tool-priority-num.p3 { background: var(--teal-light); color: var(--teal); }
+  .tool-priority-text { font-size: 13.5px; font-weight: 300; color: var(--ink); }
+
+  /* Output panel */
+  .tool-output {
+    background: var(--navy);
+    border-radius: 14px;
+    padding: 2rem;
+    margin-top: 1.25rem;
+    display: none;
+  }
+  .tool-output.visible { display: block; animation: slideDown 0.25s ease; }
+  .tool-output-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 600;
+    color: #fff; margin-bottom: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+  .tool-output-verdict {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    font-size: 13px; font-weight: 500;
+    margin-bottom: 1.25rem;
+  }
+  .tool-output-verdict.proceed { background: var(--teal); color: #fff; }
+  .tool-output-verdict.conditions { background: var(--amber); color: #fff; }
+  .tool-output-verdict.redesign { background: #DC2626; color: #fff; }
+  .tool-output-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .tool-output-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 1rem;
+  }
+  .tool-output-card-label {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.35); margin-bottom: 0.5rem;
+  }
+  .tool-output-card-value {
+    font-size: 13.5px; font-weight: 300;
+    color: rgba(255,255,255,0.85); line-height: 1.55;
+  }
+  .tool-score-row {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-bottom: 0.6rem;
+  }
+  .tool-score-label {
+    font-size: 12px; font-weight: 300;
+    color: rgba(255,255,255,0.5); width: 140px; flex-shrink: 0;
+  }
+  .tool-score-bar-wrap {
+    flex: 1; height: 6px; background: rgba(255,255,255,0.1);
+    border-radius: 3px; overflow: hidden;
+  }
+  .tool-score-bar { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+  .tool-score-bar.amber { background: var(--amber-mid); }
+  .tool-score-bar.teal  { background: var(--teal-mid); }
+  .tool-score-pct { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.5); min-width: 30px; text-align: right; }
+
+  @media (max-width: 720px) {
+    .tool-grid-2, .tool-grid-3 { grid-template-columns: 1fr; }
+    .tool-output-grid { grid-template-columns: 1fr; }
+  }
+
 </style>
 </head>
 <body>
@@ -892,6 +1156,7 @@
     <li><a href="#stakeholders">Stakeholders</a></li>
     <li><a href="#callout">Our Commitment</a></li>
     <li><a href="#regions">Regional Lens</a></li>
+    <li><a href="decision-tool.html">Decision Tool</a></li>
     <li><a href="#endorse" style="color:var(--amber-mid); font-weight:500;">Sign On</a></li>
   </ul>
 </nav>
@@ -1030,7 +1295,7 @@
   <!-- CALLOUT -->
   <div class="callout" id="callout">
     <div class="callout-amber-bar"></div>
-    <div class="callout-text">The AI boom is here whether we want it or not. The question is how we harness it — for our communities, our economies, and our climate.</div>
+    <div class="callout-text">For the first time ever, our potential for growth is constrained by energy. The question is how we choose to embrace this challenge and how we harness its strengths — for our communities, our economies, and our climate.</div>
     <div class="callout-attr">Global Principles for AI &amp; Energy</div>
   </div>
 
@@ -1278,6 +1543,22 @@
         </div>
       </div>
 
+    </div>
+  </div>
+</div>
+
+
+<!-- DECISION TOOL TEASER -->
+<div style="background:var(--navy); padding:4rem 0;" id="decision-tool">
+  <div style="max-width:1120px; margin:0 auto; padding:0 2.5rem; display:grid; grid-template-columns:1fr auto; gap:3rem; align-items:center;">
+    <div>
+      <div style="font-size:10.5px; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--amber-mid); margin-bottom:1rem; display:flex; align-items:center; gap:10px;"><span style="display:inline-block; width:24px; height:1px; background:var(--amber);"></span>Practical Tool</div>
+      <h2 style="font-family:'Playfair Display',serif; font-size:clamp(1.6rem,3vw,2.2rem); font-weight:400; color:#fff; letter-spacing:-0.02em; line-height:1.2; margin-bottom:0.85rem;">AI + Energy <em style="font-style:italic; color:var(--amber-mid);">Decision Tool</em></h2>
+      <p style="font-size:14.5px; font-weight:300; color:rgba(255,255,255,0.5); line-height:1.75; max-width:520px; margin-bottom:0;">A structured 7-step framework for evaluating any AI infrastructure or energy project — designed to be used in meetings, deal reviews, and policy discussions. Covers go/no-go screening, principle alignment scoring, tradeoff prioritization, and generates a shareable assessment summary.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:0.75rem; flex-shrink:0;">
+      <a href="decision-tool.html" style="display:inline-block; padding:0.85rem 1.75rem; background:var(--amber); color:#fff; text-decoration:none; border-radius:10px; font-family:'Instrument Sans',sans-serif; font-size:13.5px; font-weight:500; letter-spacing:0.03em; white-space:nowrap; text-align:center;">Open the tool &#8594;</a>
+      <p style="font-size:11px; font-weight:300; color:rgba(255,255,255,0.3); text-align:center; margin:0;">~25 minutes &nbsp;&middot;&nbsp; Print / PDF ready</p>
     </div>
   </div>
 </div>
@@ -1786,6 +2067,144 @@ function showRegion(id, btn) {
   document.getElementById('region-' + id).classList.add('active');
   btn.classList.add('active');
 }
+
+
+/* ---- DECISION TOOL ---- */
+(function() {
+
+  // Checkbox visual state
+  document.querySelectorAll('.tool-check-item input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', function() {
+      const item = this.closest('.tool-check-item');
+      item.classList.toggle('checked', this.checked);
+      updateScreenAlert();
+      updateSignalAlert();
+    });
+  });
+
+  function countChecked(groupId) {
+    const group = document.getElementById(groupId);
+    if (!group) return 0;
+    return group.querySelectorAll('input:checked').length;
+  }
+
+  function totalInGroup(groupId) {
+    const group = document.getElementById(groupId);
+    if (!group) return 0;
+    return group.querySelectorAll('input').length;
+  }
+
+  function updateScreenAlert() {
+    const total = document.querySelectorAll('[name="screen"]').length;
+    const checked = document.querySelectorAll('[name="screen"]:checked').length;
+    const unchecked = total - checked;
+    const alertStop = document.getElementById('screenAlert');
+    const alertOk   = document.getElementById('screenOk');
+    if (unchecked >= 2) {
+      alertStop.classList.add('visible'); alertOk.classList.remove('visible');
+    } else if (checked === total) {
+      alertOk.classList.add('visible'); alertStop.classList.remove('visible');
+    } else {
+      alertStop.classList.remove('visible'); alertOk.classList.remove('visible');
+    }
+  }
+
+  function updateSignalAlert() {
+    const checked = document.querySelectorAll('[name="signal"]:checked').length;
+    const alert = document.getElementById('signalAlert');
+    alert.classList.toggle('visible', checked === 0);
+  }
+
+  window.generateOutput = function() {
+    const p1 = countChecked('p1checks'), p1t = totalInGroup('p1checks');
+    const p2 = countChecked('p2checks'), p2t = totalInGroup('p2checks');
+    const p3 = countChecked('p3checks'), p3t = totalInGroup('p3checks');
+    const p4 = countChecked('p4checks'), p4t = totalInGroup('p4checks');
+    const screenChecked = document.querySelectorAll('[name="screen"]:checked').length;
+    const screenTotal   = document.querySelectorAll('[name="screen"]').length;
+    const signals = document.querySelectorAll('[name="signal"]:checked').length;
+    const totalChecked = p1 + p2 + p3 + p4;
+    const totalPossible = p1t + p2t + p3t + p4t;
+    const pct = totalPossible > 0 ? Math.round((totalChecked / totalPossible) * 100) : 0;
+
+    // Score bars
+    function setScore(barId, pctId, checked, total) {
+      const p = total > 0 ? Math.round((checked / total) * 100) : 0;
+      document.getElementById(barId).style.width = p + '%';
+      document.getElementById(pctId).textContent = p + '%';
+    }
+    setScore('scoreP1','pctP1', p1, p1t);
+    setScore('scoreP2','pctP2', p2, p2t);
+    setScore('scoreP3','pctP3', p3, p3t);
+    setScore('scoreP4','pctP4', p4, p4t);
+
+    // Verdict
+    const screenFailed = screenTotal - screenChecked >= 2;
+    const verdictEl = document.getElementById('outputVerdict');
+    let verdictClass, verdictText;
+    if (screenFailed || (pct < 40 && signals === 0)) {
+      verdictClass = 'redesign'; verdictText = 'Redesign required';
+    } else if (pct >= 75 && signals > 0 && !screenFailed) {
+      verdictClass = 'proceed'; verdictText = 'Proceed';
+    } else {
+      verdictClass = 'conditions'; verdictText = 'Proceed with conditions';
+    }
+    verdictEl.innerHTML = `<div class="tool-output-verdict ${verdictClass}">${verdictText}</div>`;
+
+    // Output grid
+    const location = document.getElementById('projLocation').value || '—';
+    const mw = document.getElementById('projMW').value || '—';
+    const risk1 = document.getElementById('risk1').value || 'Not specified';
+    const risk2 = document.getElementById('risk2').value || 'Not specified';
+    const opp1 = document.getElementById('opp1').value || 'Not specified';
+    const opp2 = document.getElementById('opp2').value || 'Not specified';
+    const tension = document.getElementById('tension').value || 'Not identified';
+    const missing = document.getElementById('coordMissing').value || 'None identified';
+
+    document.getElementById('outputGrid').innerHTML = `
+      <div class="tool-output-card">
+        <div class="tool-output-card-label">Project</div>
+        <div class="tool-output-card-value">${escHtml(mw)} &mdash; ${escHtml(location)}</div>
+      </div>
+      <div class="tool-output-card">
+        <div class="tool-output-card-label">Overall principle alignment</div>
+        <div class="tool-output-card-value">${pct}% (${totalChecked} of ${totalPossible} checks met)</div>
+      </div>
+      <div class="tool-output-card">
+        <div class="tool-output-card-label">Top risks</div>
+        <div class="tool-output-card-value">1. ${escHtml(risk1)}<br>2. ${escHtml(risk2)}</div>
+      </div>
+      <div class="tool-output-card">
+        <div class="tool-output-card-label">Top opportunities</div>
+        <div class="tool-output-card-value">1. ${escHtml(opp1)}<br>2. ${escHtml(opp2)}</div>
+      </div>
+      <div class="tool-output-card">
+        <div class="tool-output-card-label">Key tension</div>
+        <div class="tool-output-card-value">${escHtml(tension)}</div>
+      </div>
+      <div class="tool-output-card">
+        <div class="tool-output-card-label">Missing from the table</div>
+        <div class="tool-output-card-value">${escHtml(missing)}</div>
+      </div>
+    `;
+
+    document.getElementById('toolOutput').classList.add('visible');
+    document.getElementById('toolOutput').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  };
+
+  window.resetTool = function() {
+    document.querySelectorAll('.tool-check-item input').forEach(cb => {
+      cb.checked = false;
+      cb.closest('.tool-check-item').classList.remove('checked');
+    });
+    document.querySelectorAll('.tool-input').forEach(i => i.value = '');
+    document.getElementById('toolOutput').classList.remove('visible');
+    document.getElementById('screenAlert').classList.remove('visible');
+    document.getElementById('screenOk').classList.remove('visible');
+    document.getElementById('signalAlert').classList.remove('visible');
+  };
+
+})();
 
 /* Load signatories when page opens */
 loadEndorsers();
