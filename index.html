@@ -1783,7 +1783,7 @@ async function loadCaseStudies() {
     let allRecords = [], offset = null;
     do {
       const csParams = 'filterByFormula=' + encodeURIComponent('{Status}="Approved"')
-        + '&fields%5B%5D=Title&fields%5B%5D=Source&fields%5B%5D=URL&fields%5B%5D=Principle&fields%5B%5D=Description'
+        + '&fields[]=Title&fields[]=Source&fields[]=URL&fields[]=Principle&fields[]=Description'
         + '&pageSize=100'
         + (offset ? '&offset=' + offset : '');
       const url = '/.netlify/functions/airtable-read?table=tbl2H7FsOAuN4djtr&query=' + encodeURIComponent(csParams);
@@ -1951,7 +1951,7 @@ async function loadEndorsers() {
   try {
     let allRecords = [], offset = null;
     do {
-      const readParams = 'fields%5B%5D=Name&fields%5B%5D=Organization&fields%5B%5D=Sector&pageSize=100' + (offset ? '&offset=' + offset : '');
+      const readParams = 'fields[]=Name&fields[]=Organization&fields[]=Sector&pageSize=100' + (offset ? '&offset=' + offset : '');
       const url = '/.netlify/functions/airtable-read?table=tblV9AL3Q0gipS9Cj&query=' + encodeURIComponent(readParams);
       const res = await fetch(url);
       const data = await res.json();
