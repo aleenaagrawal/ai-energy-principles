@@ -1150,16 +1150,84 @@
 
 /* ── PRINT STYLES ── */
 @media print {
-  nav, .tool-actions, .tool-btn, .back-link { display: none !important; }
-  .tool-wrap { padding: 0; border: none; }
-  .tool-section { break-inside: avoid; }
-  .tool-output { display: block !important; background: #f5f5f5; color: #000; border: 1px solid #ccc; }
-  .tool-output-heading, .tool-output-card-label { color: #333; }
-  .tool-output-card-value { color: #000; }
-  .tool-output-verdict { border: 2px solid #333; color: #000; background: #eee !important; }
-  .tool-score-bar { background: #666 !important; }
-  .tool-score-label, .tool-score-pct { color: #333; }
+  /* Hide everything except the tool content */
+  nav,
+  .hero-wrap,
+  .tool-actions,
+  .tool-btn,
+  #generateGate,
+  footer { display: none !important; }
+
+  /* Reset layout for print */
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body { background: #fff !important; font-size: 11pt; }
+  .tool-wrap { padding: 1rem 0 !important; border: none !important; background: #fff !important; }
+  .tool-inner { padding: 0 1.5rem !important; max-width: 100% !important; }
+
+  /* Section styling */
+  .tool-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1px solid #ccc !important;
+    border-radius: 6px !important;
+    margin-bottom: 0.75rem !important;
+  }
+  .tool-section-header { background: #f5f5f5 !important; padding: 0.5rem 1rem !important; }
+  .tool-section-num { background: #333 !important; }
+  .tool-section-body { padding: 0.75rem 1rem !important; }
+
+  /* Checkboxes — show check state as text */
+  .tool-check-item { border: 1px solid #ddd !important; padding: 0.4rem 0.6rem !important; background: #fff !important; }
+  .tool-check-item.checked { background: #f0f7f0 !important; border-color: #999 !important; }
+
+  /* Inputs — show values */
+  .tool-input { border: 1px solid #ccc !important; background: #fafafa !important; color: #000 !important; padding: 0.3rem 0.5rem !important; }
+
+  /* Principle cards */
+  .tool-principle-header.amber { background: #fef3e2 !important; }
+  .tool-principle-header.teal  { background: #e6f4f1 !important; }
+
+  /* Priority rows */
+  .tool-priority-row { border: 1px solid #ddd !important; }
+  .tool-priority-num.p1 { background: #fee2e2 !important; }
+  .tool-priority-num.p2 { background: #fef3e2 !important; }
+  .tool-priority-num.p3 { background: #e6f4f1 !important; }
+
+  /* Output panel — always show, make readable */
+  .tool-output {
+    display: block !important;
+    background: #1a1a2e !important;
+    border-radius: 6px !important;
+    padding: 1rem !important;
+    break-inside: avoid;
+  }
+  .tool-output-heading { color: #fff !important; }
+  .tool-output-verdict { display: inline-block !important; margin-bottom: 0.75rem !important; }
+  .tool-output-verdict.proceed    { background: #1F7A6E !important; color: #fff !important; }
+  .tool-output-verdict.conditions { background: #C8873A !important; color: #fff !important; }
+  .tool-output-verdict.redesign   { background: #DC2626 !important; color: #fff !important; }
+  .tool-output-grid { grid-template-columns: 1fr 1fr !important; }
+  .tool-output-card { background: rgba(255,255,255,0.1) !important; border: 1px solid rgba(255,255,255,0.2) !important; }
+  .tool-output-card-label { color: rgba(255,255,255,0.6) !important; }
+  .tool-output-card-value { color: #fff !important; }
+  .tool-score-label { color: rgba(255,255,255,0.6) !important; }
+  .tool-score-pct   { color: rgba(255,255,255,0.6) !important; }
+  .tool-score-bar-wrap { background: rgba(255,255,255,0.15) !important; }
+  .tool-score-bar.amber { background: #C8873A !important; }
+  .tool-score-bar.teal  { background: #2A9D8F !important; }
+
+  /* Alert badges */
+  .tool-alert.visible { display: flex !important; }
+
+  /* Print header */
+  .print-header { display: block !important; }
+
+  /* Page setup */
+  @page { margin: 1.5cm; size: A4; }
 }
+
+/* Hidden on screen, visible on print */
+.print-header { display: none; }
 </style>
 </head>
 <body>
@@ -1190,9 +1258,14 @@
 <div style="background:var(--bg); padding:3.5rem 0 5rem; border-top:1px solid var(--border);">
   <div class="tool-inner">
 
-    <div class="tool-actions" style="margin-bottom:2rem;">
+    <div class="print-header" style="margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:2px solid #0D1F2D;">
+    <div style="font-size:9pt; color:#999; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.25rem;">Global Principles for AI &amp; Energy</div>
+    <div style="font-size:16pt; font-weight:600; color:#0D1F2D; font-family:Georgia,serif;">AI + Energy Decision Tool</div>
+    <div style="font-size:9pt; color:#666; margin-top:0.25rem;" id="printDate"></div>
+  </div>
+  <div class="tool-actions" style="margin-bottom:2rem;">
       <button class="tool-btn tool-btn-primary" onclick="openGenerateGate()">Generate assessment &#8594;</button>
-      <button class="tool-btn tool-btn-secondary" onclick="window.print()">Print / Save as PDF</button>
+      <button class="tool-btn tool-btn-secondary" onclick="triggerPrint()">Print / Save as PDF</button>
       <button class="tool-btn tool-btn-secondary" onclick="resetTool()">Reset</button>
     </div>
 
@@ -1285,9 +1358,9 @@
           </div>
         </div>
         <div class="tool-principle">
-          <div class="tool-principle-header teal"><span class="tool-principle-tag">Principle III</span><span class="tool-principle-name">System Alignment — Energy + Market Fit</span></div>
+          <div class="tool-principle-header teal"><span class="tool-principle-tag">Principle III</span><span class="tool-principle-name">System Alignment — Further Local Climate Goals</span></div>
           <div class="tool-principle-body">
-            <div class="tool-label" style="margin-bottom:0.5rem;">Does this improve the broader energy system?</div>
+            <div class="tool-label" style="margin-bottom:0.5rem;">Does this advance local clean energy and climate goals?</div>
             <div class="tool-check-group" id="p3checks">
               <label class="tool-check-item teal-check"><input type="checkbox" name="p3"> <span class="tool-check-text">Load growth is aligned with clean energy buildout</span></label>
               <label class="tool-check-item teal-check"><input type="checkbox" name="p3"> <span class="tool-check-text">Project can anchor new generation, storage, or transmission</span></label>
