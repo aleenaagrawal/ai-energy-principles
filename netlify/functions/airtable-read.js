@@ -23,6 +23,15 @@ exports.handler = async (event) => {
       };
     }
 
+    // Check token is present
+    if (!process.env.AIRTABLE_TOKEN) {
+      console.error('AIRTABLE_TOKEN environment variable is not set');
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'Server configuration error — token missing' }),
+      };
+    }
+
     // query arrives double-encoded from the browser — decode once before
     // forwarding so Airtable receives clean params
     const decodedQuery = query ? decodeURIComponent(query) : '';
@@ -38,6 +47,11 @@ exports.handler = async (event) => {
     });
 
     const data = await res.json();
+
+    // Log errors clearly in Netlify function logs
+    if (!res.ok) {
+      console.error('Airtable error:', res.status, JSON.stringify(data));
+    }
 
     return {
       statusCode: res.status,
