@@ -1610,8 +1610,7 @@ function confirmGenerateGate() {
   }
   document.getElementById('printGateError').style.display = 'none';
 
-  var AT_TOKEN    = 'patn92VzFYiPQCCrs.f4962f5f7c37cfedf1341c6bea88425de17c8fabd0ed0b155da0704257e3db4a';
-  var AT_TOOL_URL = 'https://api.airtable.com/v0/app3lFdXJvCN4vmv2/tbl6JcYyZgbXnd8DC';
+  var AT_TOOL_URL = '/.netlify/functions/airtable-tool';
   var p1 = countChecked('p1checks'), p2 = countChecked('p2checks');
   var p3 = countChecked('p3checks'), p4 = countChecked('p4checks');
   var total = totalInGroup('p1checks') + totalInGroup('p2checks') + totalInGroup('p3checks') + totalInGroup('p4checks');
@@ -1628,7 +1627,7 @@ function confirmGenerateGate() {
 
   fetch(AT_TOOL_URL, {
     method: 'POST',
-    headers: { 'Authorization': 'Bearer ' + AT_TOKEN, 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ records: [{ fields: {
       'Name': name, 'Email': email, 'Organization': org,
       'Decision Type': decisionTypes,

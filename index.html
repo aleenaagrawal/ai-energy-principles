@@ -1732,15 +1732,10 @@
 </footer>
 
 <script>
-/* ---- AIRTABLE CONFIG ---- */
-const AT_TOKEN  = 'patn92VzFYiPQCCrs.f4962f5f7c37cfedf1341c6bea88425de17c8fabd0ed0b155da0704257e3db4a';
-const AT_BASE   = 'app3lFdXJvCN4vmv2';
-const AT_TABLE  = 'tblV9AL3Q0gipS9Cj';
-const AT_URL    = `https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}`;
-const AT_HEADS  = { 'Authorization': `Bearer ${AT_TOKEN}`, 'Content-Type': 'application/json' };
-
-const AT_CS_TABLE = 'tbl2H7FsOAuN4djtr';
-const AT_CS_URL   = `https://api.airtable.com/v0/${AT_BASE}/${AT_CS_TABLE}`;
+/* ---- API CONFIG (proxied via Netlify — no token in browser) ---- */
+const AT_URL    = '/.netlify/functions/airtable-endorse';
+const AT_CS_URL = '/.netlify/functions/airtable-casestudy';
+const AT_HEADS  = { 'Content-Type': 'application/json' };
 const principleLabels = { 1: 'Principle I', 2: 'Principle II', 3: 'Principle III', 4: 'Principle IV' };
 
 let activeDetail = null;
@@ -1787,12 +1782,12 @@ async function loadCaseStudies() {
     const params = encodeURIComponent("Status") + "=" + encodeURIComponent("Approved");
     let allRecords = [], offset = null;
     do {
-      const url = AT_CS_URL
-        + '?filterByFormula=' + encodeURIComponent('{Status}="Approved"')
+      const csParams = 'filterByFormula=' + encodeURIComponent('{Status}="Approved"')
         + '&fields%5B%5D=Title&fields%5B%5D=Source&fields%5B%5D=URL&fields%5B%5D=Principle&fields%5B%5D=Description'
         + '&pageSize=100'
         + (offset ? '&offset=' + offset : '');
-      const res = await fetch(url, { headers: AT_HEADS });
+      const url = '/.netlify/functions/airtable-read?table=tbl2H7FsOAuN4djtr&query=' + encodeURIComponent(csParams);
+      const res = await fetch(url);
       const data = await res.json();
       if (!data.records) break;
       allRecords = allRecords.concat(data.records);
@@ -1956,8 +1951,9 @@ async function loadEndorsers() {
   try {
     let allRecords = [], offset = null;
     do {
-      const url = AT_URL + '?fields%5B%5D=Name&fields%5B%5D=Organization&fields%5B%5D=Sector&pageSize=100' + (offset ? '&offset=' + offset : '');
-      const res = await fetch(url, { headers: AT_HEADS });
+      const readParams = 'fields%5B%5D=Name&fields%5B%5D=Organization&fields%5B%5D=Sector&pageSize=100' + (offset ? '&offset=' + offset : '');
+      const url = '/.netlify/functions/airtable-read?table=tblV9AL3Q0gipS9Cj&query=' + encodeURIComponent(readParams);
+      const res = await fetch(url);
       const data = await res.json();
       if (!data.records) break;
       allRecords = allRecords.concat(data.records);
