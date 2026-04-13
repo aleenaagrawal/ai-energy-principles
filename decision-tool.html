@@ -1485,238 +1485,206 @@ function escHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* ---- DECISION TOOL ---- */
+/* ---- DECISION TOOL HELPERS (internal) ---- */
 (function() {
-
-  // Checkbox visual state
-  document.querySelectorAll('.tool-check-item input[type="checkbox"]').forEach(cb => {
+  document.querySelectorAll('.tool-check-item input[type="checkbox"]').forEach(function(cb) {
     cb.addEventListener('change', function() {
-      const item = this.closest('.tool-check-item');
-      item.classList.toggle('checked', this.checked);
+      this.closest('.tool-check-item').classList.toggle('checked', this.checked);
       updateScreenAlert();
       updateSignalAlert();
     });
   });
 
-  function countChecked(groupId) {
-    const group = document.getElementById(groupId);
-    if (!group) return 0;
-    return group.querySelectorAll('input:checked').length;
-  }
-
-  function totalInGroup(groupId) {
-    const group = document.getElementById(groupId);
-    if (!group) return 0;
-    return group.querySelectorAll('input').length;
-  }
-
   function updateScreenAlert() {
-    const total = document.querySelectorAll('[name="screen"]').length;
-    const checked = document.querySelectorAll('[name="screen"]:checked').length;
-    const unchecked = total - checked;
-    const alertStop = document.getElementById('screenAlert');
-    const alertOk   = document.getElementById('screenOk');
+    var total = document.querySelectorAll('[name="screen"]').length;
+    var checked = document.querySelectorAll('[name="screen"]:checked').length;
+    var unchecked = total - checked;
+    var stop = document.getElementById('screenAlert');
+    var ok   = document.getElementById('screenOk');
     if (unchecked >= 2) {
-      alertStop.classList.add('visible'); alertOk.classList.remove('visible');
+      stop.classList.add('visible'); ok.classList.remove('visible');
     } else if (checked === total) {
-      alertOk.classList.add('visible'); alertStop.classList.remove('visible');
+      ok.classList.add('visible'); stop.classList.remove('visible');
     } else {
-      alertStop.classList.remove('visible'); alertOk.classList.remove('visible');
+      stop.classList.remove('visible'); ok.classList.remove('visible');
     }
   }
 
   function updateSignalAlert() {
-    const checked = document.querySelectorAll('[name="signal"]:checked').length;
-    const alert = document.getElementById('signalAlert');
-    alert.classList.toggle('visible', checked === 0);
+    var checked = document.querySelectorAll('[name="signal"]:checked').length;
+    document.getElementById('signalAlert').classList.toggle('visible', checked === 0);
   }
-
-  window.generateOutput = function() {
-    const p1 = countChecked('p1checks'), p1t = totalInGroup('p1checks');
-    const p2 = countChecked('p2checks'), p2t = totalInGroup('p2checks');
-    const p3 = countChecked('p3checks'), p3t = totalInGroup('p3checks');
-    const p4 = countChecked('p4checks'), p4t = totalInGroup('p4checks');
-    const screenChecked = document.querySelectorAll('[name="screen"]:checked').length;
-    const screenTotal   = document.querySelectorAll('[name="screen"]').length;
-    const signals = document.querySelectorAll('[name="signal"]:checked').length;
-    const totalChecked = p1 + p2 + p3 + p4;
-    const totalPossible = p1t + p2t + p3t + p4t;
-    const pct = totalPossible > 0 ? Math.round((totalChecked / totalPossible) * 100) : 0;
-
-    // Score bars
-    function setScore(barId, pctId, checked, total) {
-      const p = total > 0 ? Math.round((checked / total) * 100) : 0;
-      document.getElementById(barId).style.width = p + '%';
-      document.getElementById(pctId).textContent = p + '%';
-    }
-    setScore('scoreP1','pctP1', p1, p1t);
-    setScore('scoreP2','pctP2', p2, p2t);
-    setScore('scoreP3','pctP3', p3, p3t);
-    setScore('scoreP4','pctP4', p4, p4t);
-
-    // Verdict
-    const screenFailed = screenTotal - screenChecked >= 2;
-    const verdictEl = document.getElementById('outputVerdict');
-    let verdictClass, verdictText;
-    if (screenFailed || (pct < 40 && signals === 0)) {
-      verdictClass = 'redesign'; verdictText = 'Redesign required';
-    } else if (pct >= 75 && signals > 0 && !screenFailed) {
-      verdictClass = 'proceed'; verdictText = 'Proceed';
-    } else {
-      verdictClass = 'conditions'; verdictText = 'Proceed with conditions';
-    }
-    verdictEl.innerHTML = `<div class="tool-output-verdict ${verdictClass}">${verdictText}</div>`;
-
-    // Output grid
-    const location = document.getElementById('projLocation').value || '—';
-    const mw = document.getElementById('projMW').value || '—';
-    const risk1 = document.getElementById('risk1').value || 'Not specified';
-    const risk2 = document.getElementById('risk2').value || 'Not specified';
-    const opp1 = document.getElementById('opp1').value || 'Not specified';
-    const opp2 = document.getElementById('opp2').value || 'Not specified';
-    const tension = document.getElementById('tension').value || 'Not identified';
-    const missing = document.getElementById('coordMissing').value || 'None identified';
-
-    document.getElementById('outputGrid').innerHTML = `
-      <div class="tool-output-card">
-        <div class="tool-output-card-label">Project</div>
-        <div class="tool-output-card-value">${escHtml(mw)} &mdash; ${escHtml(location)}</div>
-      </div>
-      <div class="tool-output-card">
-        <div class="tool-output-card-label">Overall principle alignment</div>
-        <div class="tool-output-card-value">${pct}% (${totalChecked} of ${totalPossible} checks met)</div>
-      </div>
-      <div class="tool-output-card">
-        <div class="tool-output-card-label">Top risks</div>
-        <div class="tool-output-card-value">1. ${escHtml(risk1)}<br>2. ${escHtml(risk2)}</div>
-      </div>
-      <div class="tool-output-card">
-        <div class="tool-output-card-label">Top opportunities</div>
-        <div class="tool-output-card-value">1. ${escHtml(opp1)}<br>2. ${escHtml(opp2)}</div>
-      </div>
-      <div class="tool-output-card">
-        <div class="tool-output-card-label">Key tension</div>
-        <div class="tool-output-card-value">${escHtml(tension)}</div>
-      </div>
-      <div class="tool-output-card">
-        <div class="tool-output-card-label">Missing from the table</div>
-        <div class="tool-output-card-value">${escHtml(missing)}</div>
-      </div>
-    `;
-
-    document.getElementById('toolOutput').classList.add('visible');
-    document.getElementById('toolOutput').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-    // Airtable submission handled by gate
-  };
-
-
-  // ---- GENERATE GATE ----
-  window.openGenerateGate = function() {
-    document.getElementById('generateGate').style.display = 'flex';
-    document.getElementById('printGateError').style.display = 'none';
-    setTimeout(function() {
-      var el = document.getElementById('userNameField');
-      if (el) el.focus();
-    }, 50);
-  };
-
-  window.closeGenerateGate = function() {
-    document.getElementById('generateGate').style.display = 'none';
-    document.getElementById('printGateError').style.display = 'none';
-  };
-
-  window.confirmGenerateGate = function() {
-    var name  = document.getElementById('userNameField').value.trim();
-    var email = document.getElementById('userEmailField').value.trim();
-    var org   = document.getElementById('userOrgField').value.trim();
-
-    if (!name || !email || !email.includes('@')) {
-      document.getElementById('printGateError').style.display = 'block';
-      return;
-    }
-    document.getElementById('printGateError').style.display = 'none';
-
-    // Submit to Airtable
-    var AT_TOKEN    = 'patn92VzFYiPQCCrs.f4962f5f7c37cfedf1341c6bea88425de17c8fabd0ed0b155da0704257e3db4a';
-    var AT_TOOL_URL = 'https://api.airtable.com/v0/app3lFdXJvCN4vmv2/tbl6JcYyZgbXnd8DC';
-
-    var p1 = countChecked('p1checks'), p2 = countChecked('p2checks');
-    var p3 = countChecked('p3checks'), p4 = countChecked('p4checks');
-    var p1t = totalInGroup('p1checks'), p2t = totalInGroup('p2checks');
-    var p3t = totalInGroup('p3checks'), p4t = totalInGroup('p4checks');
-    var total = p1t + p2t + p3t + p4t;
-    var pct   = total > 0 ? Math.round(((p1+p2+p3+p4)/total)*100) : 0;
-    var screenTotal   = document.querySelectorAll('[name="screen"]').length;
-    var screenChecked = document.querySelectorAll('[name="screen"]:checked').length;
-    var screenFailed  = (screenTotal - screenChecked) >= 2;
-    var signals = document.querySelectorAll('[name="signal"]:checked').length;
-    var verdictText = (pct >= 75 && signals > 0 && !screenFailed) ? 'Proceed'
-      : (screenFailed || (pct < 40 && signals === 0)) ? 'Redesign Required'
-      : 'Proceed with Conditions';
-    var decisionTypes = Array.from(document.querySelectorAll('#decisionTypes input:checked'))
-      .map(function(cb) { return cb.value; }).join(', ') || '—';
-
-    fetch(AT_TOOL_URL, {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + AT_TOKEN, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ records: [{ fields: {
-        'Name':                   name,
-        'Email':                  email,
-        'Organization':           org,
-        'Decision Type':          decisionTypes,
-        'Project MW':             document.getElementById('projMW').value || '',
-        'Location':               document.getElementById('projLocation').value || '',
-        'Energization Target':    document.getElementById('projTimeline').value || '',
-        'Key Actors':             document.getElementById('projActors').value || '',
-        'Screen Passed':          !screenFailed,
-        'Screen Unchecked Count': screenTotal - screenChecked,
-        'P1 Score':               p1,
-        'P2 Score':               p2,
-        'P3 Score':               p3,
-        'P4 Score':               p4,
-        'Overall Score Pct':      pct,
-        'Verdict':                verdictText,
-        'Signals Count':          signals,
-        'Coordination Missing':   document.getElementById('coordMissing').value || '',
-        'Key Tension':            document.getElementById('tension').value || '',
-        'Risk 1':                 document.getElementById('risk1').value || '',
-        'Risk 2':                 document.getElementById('risk2').value || '',
-        'Opportunity 1':          document.getElementById('opp1').value || '',
-        'Opportunity 2':          document.getElementById('opp2').value || '',
-        'Submitted At':           new Date().toISOString(),
-        'PDF Saved':              false,
-      }}]})
-    }).catch(function() {});
-
-    closeGenerateGate();
-    setTimeout(function() { generateOutput(); }, 50);
-  };
-
-  // Close gate on backdrop click or Escape
-  document.getElementById('generateGate').addEventListener('click', function(e) {
-    if (e.target === this) closeGenerateGate();
-  });
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeGenerateGate();
-    if (e.key === 'Enter' && document.getElementById('generateGate').style.display === 'flex') {
-      confirmGenerateGate();
-    }
-  });
-
-  window.resetTool = function() {
-    document.querySelectorAll('.tool-check-item input').forEach(cb => {
-      cb.checked = false;
-      cb.closest('.tool-check-item').classList.remove('checked');
-    });
-    document.querySelectorAll('.tool-input').forEach(i => i.value = '');
-    document.getElementById('toolOutput').classList.remove('visible');
-    document.getElementById('screenAlert').classList.remove('visible');
-    document.getElementById('screenOk').classList.remove('visible');
-    document.getElementById('signalAlert').classList.remove('visible');
-  };
-
 })();
+
+/* ---- GLOBAL TOOL FUNCTIONS ---- */
+
+function countChecked(groupId) {
+  var g = document.getElementById(groupId);
+  return g ? g.querySelectorAll('input:checked').length : 0;
+}
+
+function totalInGroup(groupId) {
+  var g = document.getElementById(groupId);
+  return g ? g.querySelectorAll('input').length : 0;
+}
+
+function generateOutput() {
+  var p1 = countChecked('p1checks'), p1t = totalInGroup('p1checks');
+  var p2 = countChecked('p2checks'), p2t = totalInGroup('p2checks');
+  var p3 = countChecked('p3checks'), p3t = totalInGroup('p3checks');
+  var p4 = countChecked('p4checks'), p4t = totalInGroup('p4checks');
+  var screenChecked = document.querySelectorAll('[name="screen"]:checked').length;
+  var screenTotal   = document.querySelectorAll('[name="screen"]').length;
+  var signals = document.querySelectorAll('[name="signal"]:checked').length;
+  var totalChecked  = p1 + p2 + p3 + p4;
+  var totalPossible = p1t + p2t + p3t + p4t;
+  var pct = totalPossible > 0 ? Math.round((totalChecked / totalPossible) * 100) : 0;
+
+  function setScore(barId, pctId, checked, total) {
+    var p = total > 0 ? Math.round((checked / total) * 100) : 0;
+    document.getElementById(barId).style.width = p + '%';
+    document.getElementById(pctId).textContent = p + '%';
+  }
+  setScore('scoreP1','pctP1', p1, p1t);
+  setScore('scoreP2','pctP2', p2, p2t);
+  setScore('scoreP3','pctP3', p3, p3t);
+  setScore('scoreP4','pctP4', p4, p4t);
+
+  var screenFailed = (screenTotal - screenChecked) >= 2;
+  var verdictClass, verdictText;
+  if (screenFailed || (pct < 40 && signals === 0)) {
+    verdictClass = 'redesign'; verdictText = 'Redesign required';
+  } else if (pct >= 75 && signals > 0 && !screenFailed) {
+    verdictClass = 'proceed'; verdictText = 'Proceed';
+  } else {
+    verdictClass = 'conditions'; verdictText = 'Proceed with conditions';
+  }
+  document.getElementById('outputVerdict').innerHTML =
+    '<div class="tool-output-verdict ' + verdictClass + '">' + verdictText + '</div>';
+
+  var location = document.getElementById('projLocation').value || '\u2014';
+  var mw       = document.getElementById('projMW').value || '\u2014';
+  var risk1    = document.getElementById('risk1').value || 'Not specified';
+  var risk2    = document.getElementById('risk2').value || 'Not specified';
+  var opp1     = document.getElementById('opp1').value || 'Not specified';
+  var opp2     = document.getElementById('opp2').value || 'Not specified';
+  var tension  = document.getElementById('tension').value || 'Not identified';
+  var missing  = document.getElementById('coordMissing').value || 'None identified';
+
+  document.getElementById('outputGrid').innerHTML =
+    '<div class="tool-output-card"><div class="tool-output-card-label">Project</div><div class="tool-output-card-value">' + escHtml(mw) + ' &mdash; ' + escHtml(location) + '</div></div>' +
+    '<div class="tool-output-card"><div class="tool-output-card-label">Overall principle alignment</div><div class="tool-output-card-value">' + pct + '% (' + totalChecked + ' of ' + totalPossible + ' checks met)</div></div>' +
+    '<div class="tool-output-card"><div class="tool-output-card-label">Top risks</div><div class="tool-output-card-value">1. ' + escHtml(risk1) + '<br>2. ' + escHtml(risk2) + '</div></div>' +
+    '<div class="tool-output-card"><div class="tool-output-card-label">Top opportunities</div><div class="tool-output-card-value">1. ' + escHtml(opp1) + '<br>2. ' + escHtml(opp2) + '</div></div>' +
+    '<div class="tool-output-card"><div class="tool-output-card-label">Key tension</div><div class="tool-output-card-value">' + escHtml(tension) + '</div></div>' +
+    '<div class="tool-output-card"><div class="tool-output-card-label">Missing from the table</div><div class="tool-output-card-value">' + escHtml(missing) + '</div></div>';
+
+  document.getElementById('toolOutput').classList.add('visible');
+  document.getElementById('toolOutput').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Airtable submission handled by gate
+}
+
+function openGenerateGate() {
+  document.getElementById('generateGate').style.display = 'flex';
+  document.getElementById('printGateError').style.display = 'none';
+  setTimeout(function() {
+    var el = document.getElementById('userNameField');
+    if (el) el.focus();
+  }, 50);
+}
+
+function closeGenerateGate() {
+  document.getElementById('generateGate').style.display = 'none';
+  document.getElementById('printGateError').style.display = 'none';
+}
+
+function confirmGenerateGate() {
+  var name  = document.getElementById('userNameField').value.trim();
+  var email = document.getElementById('userEmailField').value.trim();
+  var org   = document.getElementById('userOrgField').value.trim();
+
+  if (!name || !email || !email.includes('@')) {
+    document.getElementById('printGateError').style.display = 'block';
+    return;
+  }
+  document.getElementById('printGateError').style.display = 'none';
+
+  var AT_TOKEN    = 'patn92VzFYiPQCCrs.f4962f5f7c37cfedf1341c6bea88425de17c8fabd0ed0b155da0704257e3db4a';
+  var AT_TOOL_URL = 'https://api.airtable.com/v0/app3lFdXJvCN4vmv2/tbl6JcYyZgbXnd8DC';
+  var p1 = countChecked('p1checks'), p2 = countChecked('p2checks');
+  var p3 = countChecked('p3checks'), p4 = countChecked('p4checks');
+  var total = totalInGroup('p1checks') + totalInGroup('p2checks') + totalInGroup('p3checks') + totalInGroup('p4checks');
+  var pct   = total > 0 ? Math.round(((p1+p2+p3+p4)/total)*100) : 0;
+  var screenTotal   = document.querySelectorAll('[name="screen"]').length;
+  var screenChecked = document.querySelectorAll('[name="screen"]:checked').length;
+  var screenFailed  = (screenTotal - screenChecked) >= 2;
+  var signals = document.querySelectorAll('[name="signal"]:checked').length;
+  var verdictText = (pct >= 75 && signals > 0 && !screenFailed) ? 'Proceed'
+    : (screenFailed || (pct < 40 && signals === 0)) ? 'Redesign Required'
+    : 'Proceed with Conditions';
+  var decisionTypes = Array.from(document.querySelectorAll('#decisionTypes input:checked'))
+    .map(function(cb) { return cb.value; }).join(', ') || '\u2014';
+
+  fetch(AT_TOOL_URL, {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + AT_TOKEN, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ records: [{ fields: {
+      'Name': name, 'Email': email, 'Organization': org,
+      'Decision Type': decisionTypes,
+      'Project MW': document.getElementById('projMW').value || '',
+      'Location': document.getElementById('projLocation').value || '',
+      'Energization Target': document.getElementById('projTimeline').value || '',
+      'Key Actors': document.getElementById('projActors').value || '',
+      'Screen Passed': !screenFailed,
+      'Screen Unchecked Count': screenTotal - screenChecked,
+      'P1 Score': p1, 'P2 Score': p2, 'P3 Score': p3, 'P4 Score': p4,
+      'Overall Score Pct': pct, 'Verdict': verdictText, 'Signals Count': signals,
+      'Coordination Missing': document.getElementById('coordMissing').value || '',
+      'Key Tension': document.getElementById('tension').value || '',
+      'Risk 1': document.getElementById('risk1').value || '',
+      'Risk 2': document.getElementById('risk2').value || '',
+      'Opportunity 1': document.getElementById('opp1').value || '',
+      'Opportunity 2': document.getElementById('opp2').value || '',
+      'Submitted At': new Date().toISOString(),
+    }}]})
+  }).catch(function() {});
+
+  closeGenerateGate();
+  setTimeout(generateOutput, 50);
+}
+
+function triggerPrint() {
+  var dateEl = document.getElementById('printDate');
+  if (dateEl) {
+    dateEl.textContent = 'Generated: ' + new Date().toLocaleDateString('en-US', {
+      year: 'numeric', month: 'long', day: 'numeric'
+    });
+  }
+  window.print();
+}
+
+function resetTool() {
+  document.querySelectorAll('.tool-check-item input').forEach(function(cb) {
+    cb.checked = false;
+    cb.closest('.tool-check-item').classList.remove('checked');
+  });
+  document.querySelectorAll('.tool-input').forEach(function(i) { i.value = ''; });
+  document.getElementById('toolOutput').classList.remove('visible');
+  document.getElementById('screenAlert').classList.remove('visible');
+  document.getElementById('screenOk').classList.remove('visible');
+  document.getElementById('signalAlert').classList.remove('visible');
+}
+
+document.getElementById('generateGate').addEventListener('click', function(e) {
+  if (e.target === this) closeGenerateGate();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeGenerateGate();
+  if (e.key === 'Enter' && document.getElementById('generateGate').style.display === 'flex') {
+    confirmGenerateGate();
+  }
+});
 </script>
 
 <!-- PRINT GATE MODAL -->
